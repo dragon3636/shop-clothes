@@ -6,6 +6,7 @@ import { DatabaseModule } from './database/database.module';
 import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { FilesModule } from './files/files.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -20,12 +21,19 @@ import * as Joi from '@hapi/joi';
         PORT: Joi.number(),
         //
         JWT_EXPIRATION_TIME: Joi.string().required(),
-        JWT_SECRET: Joi.string().required()
+        JWT_SECRET: Joi.string().required(),
+        // 
+        AWS_REGION: Joi.string().required(),
+        AWS_ACCESS_KEY_ID: Joi.string().required(),
+        AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+        AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
+        AWS_MAX_SIZE_AVATAR: Joi.string().required()
       }),
     }),
     DatabaseModule,
     UsersModule,
     AuthenticationModule,
+    FilesModule
   ],
   controllers: [AppController],
   providers: [AppService],
