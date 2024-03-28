@@ -1,14 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { number } from '@hapi/joi';
-import { create } from 'domain';
-import { UsersService } from 'src/users/users.service';
-import { register } from 'module';
 import RegisterDto from './dto/RegisterDto.dto';
 import * as bcrypt from 'bcrypt';
 import { PostgresErrorCode } from '../database/postgresErrorCodes.enum';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TokenPayload } from './tokenPayload.interface';
+import { UsersService } from '../users/users.service';
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -26,7 +23,6 @@ export class AuthenticationService {
       createdUser.password = undefined;
       return createdUser;
     } catch (error) {
-      console.log("🚀 ~ AuthenticationService ~ register ~ error:", error)
       if (error?.code === PostgresErrorCode.UniqueViolation) {
         throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
       }
@@ -38,7 +34,7 @@ export class AuthenticationService {
     try {
       const user = await this.usersService.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
-      user.password = undefined;
+      // user.password = undefined;
       return user;
     } catch (error) {
       throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
