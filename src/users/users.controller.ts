@@ -66,7 +66,7 @@ export class UsersController {
   }
   @Get('file-signed-url/:id')
   @UseGuards(JwtAuthenticationGuard)
-  async getSignedUrl(@Req() request: RequestWithUser, @Param() { id }: FindOneParams, @Res() response: Response) {
+  async getSignedUrl(@Req() request: RequestWithUser, @Param() { id }: FindOneParams) {
     return await this.usersService.getPrivateFileSignedUrl(request.user.id, +id);
   }
 }
