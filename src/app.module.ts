@@ -7,6 +7,7 @@ import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { FilesModule } from './files/files.module';
+import { PostModule } from './post/post.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -33,7 +34,8 @@ import * as Joi from '@hapi/joi';
     DatabaseModule,
     UsersModule,
     AuthenticationModule,
-    FilesModule
+    FilesModule,
+    PostModule
   ],
   controllers: [AppController],
   providers: [AppService],
