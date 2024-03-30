@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 import Address from './address.entity';
 import PublicFile from 'src/files/entities/publicFile.entity';
 import { Post } from 'src/post/entities/post.entity';
+import PrivateFile from 'src/private-file/privateFile.entity';
 
 @Entity()
 class User {
@@ -28,5 +29,8 @@ class User {
   public avatar?: PublicFile;
   @OneToMany(() => Post, (post: Post) => post.author)
   public posts?: Post[];
+
+  @OneToMany(() => PrivateFile, (file: PrivateFile) => file.id)
+  public files?: PrivateFile[]
 }
 export default User;

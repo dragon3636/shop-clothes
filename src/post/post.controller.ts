@@ -30,7 +30,7 @@ export class PostController {
 
   @Patch(':id')
   @UseGuards(JwtAuthenticationGuard)
-  update(@Req() request: RequestWithUser, @Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+  update(@Req() request: RequestWithUser, @Param() id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(+id, updatePostDto);
   }
 

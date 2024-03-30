@@ -1,16 +1,18 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import User from './user.entity';
 import { Repository } from 'typeorm';
 import CreateUserDto from './dto/createUser.dto';
 import { FilesService } from 'src/files/files.service';
 import { FOLDER_AVATAR } from 'src/constant';
+import { PrivateFileService } from 'src/private-file/private-file.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
-    private readonly filesService: FilesService
+    private readonly filesService: FilesService,
+    private readonly privateFileService: PrivateFileService
   ) { }
   async getByEmail(email: string): Promise<User | null> {
     const user = await this.usersRepository.findOne({ where: { email } });
@@ -61,5 +63,22 @@ export class UsersService {
       })
       await this.filesService.deletePublicFile(fileId)
     }
+  }
+  async addPrivateFile(userId: number, imageBuffer: Buffer, filename: string) {
+    return this.privateFileService.uploadPrivateFile(imageBuffer, userId, filename);
+  }
+  async getPrivateFile(userId: number, fileId: number) {
+    const file = await this.privateFileService.getPrivateFile(fileId);
+    if (file.fileInfo.owner.id === userId) {
+      return file
+    }
+    throw new UnauthorizedException();
+  }
+  async getPrivateFileSignedUrl(userId: number, fileId: number) {
+    const file = await this.privateFileService.getPrivateFileSignUrl(fileId);
+    if (file.fileInfo.owner.id === userId) {
+      return file
+    }
+    throw new UnauthorizedException();
   }
 }

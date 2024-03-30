@@ -10,6 +10,7 @@ import { mockedConfigService } from '../utils/mocks/config.service';
 import { mockedJwtService } from '../utils/mocks/jwt.service';
 import { mockedUser } from '../authentication/tests/user.mock';
 import { mockedFile } from '../authentication/tests/publicFile.mock';
+import { PrivateFileService } from '../private-file/private-file.service';
 const userArray = [
   {
     firstName: 'firstName #1',
@@ -22,22 +23,28 @@ const userArray = [
 ];
 
 const oneUser = {
-  firstName: 'firstName #1',
-  lastName: 'lastName #1',
+  ...mockedUser
 };
-
-
+const buffer = Buffer.from(JSON.stringify({ ok: true }));
 describe('The UsersService', () => {
   let usersService: UsersService;
   let findOne: jest.Mock;
   let findOneBy: jest.Mock;
   let uploadPublicFile: jest.Mock;
   let deletePublicFile: jest.Mock;
+  let uploadPrivateFile: jest.Mock;
+  let getPrivateFile: jest.Mock;
+  let getSingedUrl: jest.Mock;
+  let getPrivateFileSignUrl: jest.Mock;
   beforeEach(async () => {
     findOne = jest.fn();
     findOneBy = jest.fn();
     deletePublicFile = jest.fn();
     uploadPublicFile = jest.fn();
+    uploadPrivateFile = jest.fn();
+    getPrivateFile = jest.fn();
+    getSingedUrl = jest.fn();
+    getPrivateFileSignUrl = jest.fn();
     const module = await Test.createTestingModule({
       providers: [
         UsersService,
@@ -46,6 +53,15 @@ describe('The UsersService', () => {
           useValue: {
             uploadPublicFile,
             deletePublicFile
+          }
+        },
+        {
+          provide: PrivateFileService,
+          useValue: {
+            uploadPrivateFile,
+            getPrivateFile,
+            getSingedUrl,
+            getPrivateFileSignUrl
           }
         },
         {
