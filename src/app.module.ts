@@ -8,6 +8,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { FilesModule } from './files/files.module';
 import { PostModule } from './post/post.module';
 import { PrivateFileModule } from './private-file/private-file.module';
+import { SearchModule } from './search/search.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -30,7 +31,11 @@ import * as Joi from '@hapi/joi';
         AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
         AWS_PRIVATE_BUCKET_NAME: Joi.string().required(),
         AWS_MAX_SIZE_AVATAR: Joi.string().required(),
-        AWS_EXPIRES_GET_SIGNED_URL: Joi.number().required()
+        AWS_EXPIRES_GET_SIGNED_URL: Joi.number().required(),
+        // elastic
+        ELASTICSEARCH_NODE: Joi.string().required(),
+        ELASTICSEARCH_USERNAME: Joi.string().required(),
+        ELASTICSEARCH_PASSWORD: Joi.string().required()
       }),
     }),
     DatabaseModule,
@@ -38,7 +43,8 @@ import * as Joi from '@hapi/joi';
     AuthenticationModule,
     FilesModule,
     PostModule,
-    PrivateFileModule
+    PrivateFileModule,
+    SearchModule
   ],
   controllers: [AppController],
   providers: [AppService],
