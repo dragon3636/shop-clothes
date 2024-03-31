@@ -8,6 +8,7 @@ import JwtAuthenticationGuard from './jwt-authentication.guard';
 import { UsersService } from '../users/users.service';
 
 @Controller('authentication')
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthenticationController {
   constructor(
     private readonly authenticationService: AuthenticationService,
@@ -23,14 +24,18 @@ export class AuthenticationController {
   @Post('log-in')
   async logIn(@Req() request: RequestWithUser) {
     const { user } = request;
-    const cookie = this.authenticationService.getCookieWithJwtToken(user.id);
-    request.res.setHeader('Set-Cookie', cookie);
+    const accessTokenCookie = await this.authenticationService.getCookieWithJwtAccessToken(user.id);
+    const { cookie: refreshTokenCookie, token } = await this.authenticationService.getCookieWithJwtRefreshToken(user.id);
+    await this.userService.setCurrentRefreshToken(token, user.id);
+    request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
+    console.log('tracking');
     return user;
   }
 
   @UseGuards(JwtAuthenticationGuard)
   @Post('log-out')
   async logOut(@Req() request: RequestWithUser, @Res() response: Response) {
+    await this.userService.removeRefreshToken(request.user.id);
     response.setHeader('Set-Cookie', this.authenticationService.getCookieForLogOut());
     return response.sendStatus(200);
   }

@@ -7,6 +7,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import RequestWithUser from 'src/authentication/requestWithUser.interface';
 
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {
 

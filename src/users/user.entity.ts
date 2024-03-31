@@ -20,6 +20,10 @@ class User {
   @Exclude()
   password: string;
 
+  @Column({ nullable: true })
+  @Exclude()
+  public currentHashedRefreshToken?: string;
+
   @JoinColumn()
   @OneToOne(() => Address, { eager: true, cascade: true })
   public address: Address;
