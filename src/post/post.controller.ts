@@ -7,6 +7,7 @@ import { FindOneParams } from 'src/utils/findOneParams';
 import RequestWithUser from 'src/authentication/requestWithUser.interface';
 
 @Controller('post')
+@UseInterceptors(ClassSerializerInterceptor)
 export class PostController {
   constructor(private readonly postService: PostService) { }
 
