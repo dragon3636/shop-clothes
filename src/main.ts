@@ -9,8 +9,9 @@ import { config } from 'aws-sdk';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new ExceptionsLoggerFilter(httpAdapter));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(
+    app.get(Reflector))
+  );
   app.use(cookieParser());
 
   const configService = app.get(ConfigService);
