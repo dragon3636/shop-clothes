@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import User from './user.entity';
-import { Repository } from 'typeorm';
+import { Connection, DataSource, Repository } from 'typeorm';
 import CreateUserDto from './dto/createUser.dto';
 import { FilesService } from 'src/files/files.service';
 import { FOLDER_AVATAR } from 'src/constant';
@@ -13,7 +13,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
     private readonly filesService: FilesService,
-    private readonly privateFileService: PrivateFileService
+    private readonly privateFileService: PrivateFileService,
+    private dataSource: DataSource
   ) { }
   async getByEmail(email: string): Promise<User | null> {
     const user = await this.usersRepository.findOne({ where: { email } });
@@ -58,11 +59,22 @@ export class UsersService {
     const user = await this.getById(userId);
     const fileId = user.avatar?.id
     if (fileId) {
-      await this.usersRepository.update({ id: userId }, {
-        ...user,
-        avatar: null,
-      })
-      await this.filesService.deletePublicFile(fileId)
+      const queryRunner = this.dataSource.createQueryRunner();
+
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      try {
+        await queryRunner.manager.update(User, { id: userId }, {
+          ...user,
+          avatar: null,
+        })
+        await this.filesService.deletePublicFileWithQueryRunner(fileId, queryRunner);
+      } catch (error) {
+        await queryRunner.rollbackTransaction();
+        throw new InternalServerErrorException();
+      } finally {
+        await queryRunner.release();
+      }
     }
   }
   async addPrivateFile(userId: number, imageBuffer: Buffer, filename: string) {
