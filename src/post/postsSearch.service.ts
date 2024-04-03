@@ -14,7 +14,7 @@ export class PostSearchService {
       body: {
         id: post.id,
         title: post.title,
-        content: post.content,
+        paragraphs: post.paragraphs,
         authorId: post.author.id
       }
     })
@@ -27,7 +27,7 @@ export class PostSearchService {
         query: {
           multi_match: {
             query: text,
-            fields: ['title', 'content']
+            fields: ['title', 'paragraphs']
           }
         }
       }
@@ -52,7 +52,6 @@ export class PostSearchService {
     const script = Object.entries(newBody).reduce((result, [key, value]) => {
       return `${result} ctx._source.${key}='${value}';`;
     }, '');
-    console.log("🚀 ~ PostSearchService ~ script ~ script:", script);
     return this.elasticsearchService.updateByQuery({
       index: this.index,
       body: {

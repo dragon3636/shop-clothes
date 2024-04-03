@@ -39,7 +39,7 @@ export class PostService {
     if (updatedPost) {
       const newBody: UpdatePostSearchBody = {
         title: updatedPost.title,
-        content: updatedPost.content,
+        paragraphs: updatedPost.paragraphs,
       }
       await this.postsSearchService.update(updatedPost, newBody);
       return updatedPost
@@ -72,5 +72,8 @@ export class PostService {
       throw new PostNotFoundException(id);
     }
     await this.postsSearchService.remove(id);
+  }
+  async getPostsWithParagraph(paragraph: string) {
+    return this.postsRepository.query("SELECT * FROM post WHERE $1= ANY(paragraph)", [paragraph]);
   }
 }
