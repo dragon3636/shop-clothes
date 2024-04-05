@@ -6,6 +6,7 @@ import RequestWithUser from './requestWithUser.interface';
 import { Response } from 'express';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
 import { UsersService } from '../users/users.service';
+import JwtRefreshGuard from './jwt-refresh.guard';
 
 @Controller('authentication')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -28,7 +29,6 @@ export class AuthenticationController {
     const { cookie: refreshTokenCookie, token } = await this.authenticationService.getCookieWithJwtRefreshToken(user.id);
     await this.userService.setCurrentRefreshToken(token, user.id);
     request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
-    console.log('tracking');
     return user;
   }
 
@@ -40,4 +40,12 @@ export class AuthenticationController {
     return response.sendStatus(200);
   }
 
+  @UseGuards(JwtRefreshGuard)
+  @Get('refresh')
+  refresh(@Req() request: RequestWithUser) {
+    const accessTokenCookie = this.authenticationService.getCookieWithJwtAccessToken(request.user.id);
+
+    request.res.setHeader('Set-Cookie', accessTokenCookie);
+    return request.user;
+  }
 }
