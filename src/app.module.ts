@@ -9,6 +9,7 @@ import { FilesModule } from './files/files.module';
 import { PostModule } from './post/post.module';
 import { PrivateFileModule } from './private-file/private-file.module';
 import { SearchModule } from './search/search.module';
+import { SubscribersModule } from './subscribers/subscribers.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -37,7 +38,9 @@ import * as Joi from '@hapi/joi';
         // elastic
         ELASTICSEARCH_NODE: Joi.string().required(),
         ELASTICSEARCH_USERNAME: Joi.string().required(),
-        ELASTICSEARCH_PASSWORD: Joi.string().required()
+        ELASTICSEARCH_PASSWORD: Joi.string().required(),
+        SUBSCRIBERS_SERVICE_HOST: Joi.string().required(),
+        SUBSCRIBERS_SERVICE_PORT: Joi.number().required()
       }),
     }),
     DatabaseModule,
@@ -46,7 +49,8 @@ import * as Joi from '@hapi/joi';
     FilesModule,
     PostModule,
     PrivateFileModule,
-    SearchModule
+    SearchModule,
+    SubscribersModule
   ],
   controllers: [AppController],
   providers: [AppService],
