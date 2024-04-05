@@ -5,6 +5,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
 import { FindOneParams } from 'src/utils/findOneParams';
 import RequestWithUser from 'src/authentication/requestWithUser.interface';
+import { PaginationParams } from 'src/utils/types/paginationParams';
 
 @Controller('post')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -20,11 +21,14 @@ export class PostController {
   }
 
   @Get()
-  findAll(@Query('search') search: string) {
+  findAll(
+    @Query('search') search: string,
+    @Query() { offset, limit, startId }: PaginationParams
+  ) {
     if (search) {
-      return this.postService.searchForPosts(search);
+      return this.postService.searchForPosts(search, offset, limit, startId);
     }
-    return this.postService.findAll();
+    return this.postService.getAllPosts(offset, limit, startId);
   }
 
   @Get(':id')
@@ -35,7 +39,6 @@ export class PostController {
   @Patch(':id')
   @UseGuards(JwtAuthenticationGuard)
   update(@Req() request: RequestWithUser, @Param() { id }: FindOneParams, @Body() updatePostDto: UpdatePostDto) {
-    console.log("🚀 ~ PostController ~ update ~ id:", id)
     return this.postService.update(+id, updatePostDto);
   }
 

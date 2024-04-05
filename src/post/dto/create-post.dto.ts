@@ -5,7 +5,7 @@ export class CreatePostDto {
   @IsString()
   title: string;
 
+  @IsString({ each: true })
   @IsNotEmpty()
-  @IsString()
-  content: string;
+  paragraphs: string[];
 }
