@@ -9,6 +9,8 @@ import { FilesModule } from './files/files.module';
 import { PostModule } from './post/post.module';
 import { PrivateFileModule } from './private-file/private-file.module';
 import { SearchModule } from './search/search.module';
+import { ProductsModule } from './products/products.module';
+import { ProductCategoriesModule } from './productCategories/productCategory.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -46,7 +48,9 @@ import * as Joi from '@hapi/joi';
     FilesModule,
     PostModule,
     PrivateFileModule,
-    SearchModule
+    SearchModule,
+    ProductsModule,
+    ProductCategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService],
