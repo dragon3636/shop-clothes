@@ -5,9 +5,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { PostSearchService } from './postsSearch.service';
 import { SearchModule } from 'src/search/search.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post]), SearchModule],
+  imports: [
+    CacheModule.register({
+      ttl: 5,
+      max: 100
+    }),
+    TypeOrmModule.forFeature([Post]),
+    SearchModule],
   controllers: [PostController],
   providers: [PostService, PostSearchService],
 })
