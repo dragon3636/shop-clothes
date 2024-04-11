@@ -28,7 +28,6 @@ export class AuthenticationController {
     const { cookie: refreshTokenCookie, token } = await this.authenticationService.getCookieWithJwtRefreshToken(user.id);
     await this.userService.setCurrentRefreshToken(token, user.id);
     request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
-    console.log('tracking');
     return user;
   }
 

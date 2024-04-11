@@ -7,8 +7,8 @@ import { FindOneParams } from 'src/utils/findOneParams';
 import RequestWithUser from 'src/authentication/requestWithUser.interface';
 import { PaginationParams } from 'src/utils/types/paginationParams';
 import { CACHE_MANAGER, CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
-import { GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
-import { HttpInterceptor } from './types/httpCache.interceptor';
+import { GET_POST_BY_ID_CACHE_KEY, GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
+import { HttpCacheInterceptor } from './httpCache.interceptor';
 
 @Controller('post')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -24,7 +24,7 @@ export class PostController {
     @Body() createPostDto: CreatePostDto) {
     return this.postService.create(request.user, createPostDto);
   }
-  @UseInterceptors(HttpInterceptor)
+  @UseInterceptors(HttpCacheInterceptor)
   @CacheKey(GET_POSTS_CACHE_KEY)
   @CacheTTL(120)
   @Get()
@@ -37,7 +37,6 @@ export class PostController {
     }
     return this.postService.getAllPosts(offset, limit, startId);
   }
-
   @Get(':id')
   findOne(@Param() { id }: FindOneParams) {
     return this.postService.getPostById(+id);

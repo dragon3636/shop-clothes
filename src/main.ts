@@ -1,10 +1,11 @@
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { ExceptionsLoggerFilter } from './utils/exceptionsLogger.filter';
 import { ConfigService } from '@nestjs/config';
 import { config } from 'aws-sdk';
+import { runInCluster } from './utils/runInCluster';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,3 +23,4 @@ async function bootstrap() {
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
+// runInCluster(bootstrap)

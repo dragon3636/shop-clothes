@@ -103,6 +103,36 @@ services:
     ports:
       - 5601:5601
 
+  redis:
+    container_name: redis
+    tty: true
+    command: sh -cx "redis-server --daemonize yes && redis-cli config set notify-keyspace-events KEA && sleep infinity"
+    image: redis:7.2.0
+    ports:
+      - 6379:6379
+    volumes:
+      - .docker/data/redis:/data
+    networks:
+      - redis
+  redisInsight:
+    container_name: redisinsight
+    image: redis/redisinsight:latest
+    depends_on:
+        - redis
+    ports:
+      - 5540:5540
+    networks:
+      - redis
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+        - redis
+    networks:
+      - redis
 volumes:
   data01:
     driver: local
@@ -116,3 +146,5 @@ networks:
     driver: bridge
   elastic:
     driver: bridge
+  redis: 
+   driver: bridge

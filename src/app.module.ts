@@ -39,7 +39,10 @@ import * as Joi from '@hapi/joi';
         // elastic
         ELASTICSEARCH_NODE: Joi.string().required(),
         ELASTICSEARCH_USERNAME: Joi.string().required(),
-        ELASTICSEARCH_PASSWORD: Joi.string().required()
+        ELASTICSEARCH_PASSWORD: Joi.string().required(),
+        // redis
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.string().required()
       }),
     }),
     DatabaseModule,

@@ -61,9 +61,6 @@ export class PostService {
       skip: offset,
       take: limit,
     });
-    console.log(count);
-    console.log(items.length);
-
     return {
       items,
       count: startId ? separateCount : count
