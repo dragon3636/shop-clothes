@@ -12,6 +12,9 @@ import { SearchModule } from './search/search.module';
 import { ProductsModule } from './products/products.module';
 import { ProductCategoriesModule } from './productCategories/productCategory.module';
 import * as Joi from '@hapi/joi';
+import { ScheduleModule } from '@nestjs/schedule';
+import { EmailModule } from './email/email.module';
+import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
 
 @Module({
   imports: [
@@ -42,7 +45,11 @@ import * as Joi from '@hapi/joi';
         ELASTICSEARCH_PASSWORD: Joi.string().required(),
         // redis
         REDIS_HOST: Joi.string().required(),
-        REDIS_PORT: Joi.string().required()
+        REDIS_PORT: Joi.string().required(),
+        // mail
+        EMAIL_SERVICE: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
       }),
     }),
     DatabaseModule,
@@ -53,7 +60,10 @@ import * as Joi from '@hapi/joi';
     PrivateFileModule,
     SearchModule,
     ProductsModule,
-    ProductCategoriesModule
+    ProductCategoriesModule,
+    ScheduleModule.forRoot(),
+    EmailModule,
+    EmailSchedulingModule
   ],
   controllers: [AppController],
   providers: [AppService],
