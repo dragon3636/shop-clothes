@@ -15,6 +15,7 @@ import * as Joi from '@hapi/joi';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EmailModule } from './email/email.module';
 import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -63,7 +64,8 @@ import { EmailSchedulingModule } from './email-scheduling/email-scheduling.modul
     ProductCategoriesModule,
     ScheduleModule.forRoot(),
     EmailModule,
-    EmailSchedulingModule
+    EmailSchedulingModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [AppService],

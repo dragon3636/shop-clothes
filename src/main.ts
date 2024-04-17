@@ -1,3 +1,4 @@
+
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
@@ -6,6 +7,7 @@ import { ExceptionsLoggerFilter } from './utils/exceptionsLogger.filter';
 import { ConfigService } from '@nestjs/config';
 import { config } from 'aws-sdk';
 import { runInCluster } from './utils/runInCluster';
+import { RedisIoAdapter } from './utils/adapters/redis-adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +20,14 @@ async function bootstrap() {
     secretAccessKey: configService.get('AWS_SECRET_ACCESS_KEY'),
     region: configService.get('AWS_REGION'),
   });
+
+  // use apdaper 
+  const redisIoAdapter = new RedisIoAdapter(app, configService);
+  await redisIoAdapter.connectToRedis();
+
+  app.useWebSocketAdapter(redisIoAdapter);
+
+
 
   await app.listen(3000);
   console.log(`Application is running on: ${await app.getUrl()}`);
