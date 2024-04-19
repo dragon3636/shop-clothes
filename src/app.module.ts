@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -16,6 +16,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { EmailModule } from './email/email.module';
 import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
 import { ChatModule } from './chat/chat.module';
+import { LoggerModule } from './logger/logger.module';
+import LogsMiddleware from './utils/logs.middleware';
 
 @Module({
   imports: [
@@ -65,12 +67,17 @@ import { ChatModule } from './chat/chat.module';
     ScheduleModule.forRoot(),
     EmailModule,
     EmailSchedulingModule,
-    ChatModule
+    ChatModule,
+    LoggerModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 // eslint-disable-next-line prettier/prettier
 export class AppModule {
-
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LogsMiddleware)
+      .forRoutes('*');
+  }
 }

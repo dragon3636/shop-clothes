@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import RegisterDto from './dto/RegisterDto.dto';
 import * as bcrypt from 'bcrypt';
 import { PostgresErrorCode } from '../database/postgresErrorCodes.enum';
@@ -8,6 +8,7 @@ import { TokenPayload } from './tokenPayload.interface';
 import { UsersService } from '../users/users.service';
 @Injectable()
 export class AuthenticationService {
+  private readonly logger = new Logger(AuthenticationService.name);
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
@@ -50,6 +51,7 @@ export class AuthenticationService {
   }
 
   private async verifyPassword(plainTextPassword: string, hashedPassword: string) {
+    this.logger
     const isPasswordMatching = await bcrypt.compare(
       plainTextPassword,
       hashedPassword

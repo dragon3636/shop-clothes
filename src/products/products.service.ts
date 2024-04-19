@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,10 +7,14 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
+  private readonly logger = new Logger(ProductsService.name);
   constructor(
     @InjectRepository(Product) private readonly productsRepository: Repository<Product>) {
   }
   async findAll() {
+    this.logger.log('Doing something...');
+    this.logger.error(
+      'This is an ERROR log message from the LoggerController.')
     return this.productsRepository.find()
   }
   async getAllBrands() {

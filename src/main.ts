@@ -8,9 +8,12 @@ import { ConfigService } from '@nestjs/config';
 import { config } from 'aws-sdk';
 import { runInCluster } from './utils/runInCluster';
 import { RedisIoAdapter } from './utils/adapters/redis-adapter';
+import getLogLevels from './utils/getLogLevels';
+import { MyLogger } from './logger/logger.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+  });
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
 
@@ -28,7 +31,7 @@ async function bootstrap() {
   app.useWebSocketAdapter(redisIoAdapter);
 
 
-
+  app.useLogger(app.get(MyLogger));
   await app.listen(3000);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
