@@ -1,26 +1,75 @@
-import { Injectable, LogLevel, LoggerService, Provider, Scope } from '@nestjs/common';
-import logger from './winston.config';
-@Injectable()
-export class MyLogger implements LoggerService {
-  log(message: string, context?: string) {
-    logger.info(message, { context });
+import { Inject, Injectable, Provider, Scope } from '@nestjs/common';
+import ILogger, { LoggerBaseKey } from './interfaces/logger.interface';
+import { ConfigService } from '@nestjs/config';
+import ContextStorageService, { ContextStorageServiceKey } from 'src/context/contextStorage.interface';
+import { INQUIRER } from '@nestjs/core';
+import { LogLevel, LogData } from './interfaces/log.interface';
+@Injectable({ scope: Scope.TRANSIENT })
+export class LoggerService implements ILogger {
+  private sourceClass: string;
+  private organization: string;
+  private context: string;
+  private app: string;
+  constructor(
+    @Inject(LoggerBaseKey) private logger: ILogger,
+    configService: ConfigService,
+    @Inject(INQUIRER) parentClass: object,
+    @Inject(ContextStorageServiceKey)
+    private contextStorageService: ContextStorageService,
+  ) {
+    // Set the source class from the parent class
+    this.sourceClass = parentClass?.constructor?.name;
+
+    // Set the organization, context and app from the environment variables
+    this.organization = configService.get<string>('ORGANIZATION');
+    this.context = configService.get<string>('CONTEXT');
+    this.app = configService.get<string>('APP');
+  }
+  public log(
+    level: LogLevel,
+    message: string | Error,
+    data?: LogData,
+    profile?: string,
+  ) {
+    return this.logger.log(level, message, this.getLogData(data), profile);
+  }
+  public debug(message: string, data?: LogData, profile?: string) {
+    return this.logger.debug(message, this.getLogData(data), profile);
   }
 
-  error(message: string, trace: string, context?: string) {
-    logger.error(message, { context, trace });
+  public info(message: string, data?: LogData, profile?: string) {
+    return this.logger.info(message, this.getLogData(data), profile);
   }
 
-  warn(message: string, context?: string) {
-    logger.warn(message, { context });
+  public warn(message: string | Error, data?: LogData, profile?: string) {
+    return this.logger.warn(message, this.getLogData(data), profile);
   }
 
-  debug(message: string, context?: string) {
-    logger.debug(message, { context });
+  public error(message: string | Error, data?: LogData, profile?: string) {
+    return this.logger.error(message, this.getLogData(data), profile);
+  }
+
+  public fatal(message: string | Error, data?: LogData, profile?: string) {
+    return this.logger.fatal(message, this.getLogData(data), profile);
+  }
+
+  public emergency(message: string | Error, data?: LogData, profile?: string) {
+    return this.logger.emergency(message, this.getLogData(data), profile);
+  }
+
+  private getLogData(data?: LogData): LogData {
+    return {
+      ...data,
+      organization: data?.organization || this.organization,
+      context: data?.context || this.context,
+      app: data?.app || this.app,
+      sourceClass: data?.sourceClass || this.sourceClass,
+      correlationId:
+        data?.correlationId || this.contextStorageService.getContextId(),
+    };
+  }
+  public startProfile(id: string) {
+    this.logger.startProfile(id);
   }
 }
 
-export const LoggerProvider: Provider<MyLogger> = {
-  provide: MyLogger,
-  scope: Scope.REQUEST,
-  useFactory: () => new MyLogger(),
-};

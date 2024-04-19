@@ -121,6 +121,7 @@ artifacts/
 *.tmp
 *.tmp_proj
 *.log
+logs
 *.vspscc
 *.vssscc
 .builds

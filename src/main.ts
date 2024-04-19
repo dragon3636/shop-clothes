@@ -9,7 +9,7 @@ import { config } from 'aws-sdk';
 import { runInCluster } from './utils/runInCluster';
 import { RedisIoAdapter } from './utils/adapters/redis-adapter';
 import getLogLevels from './utils/getLogLevels';
-import { MyLogger } from './logger/logger.service';
+import LoggerServiceAdapter from './logger/LoggerServiceAdapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -30,8 +30,7 @@ async function bootstrap() {
 
   app.useWebSocketAdapter(redisIoAdapter);
 
-
-  app.useLogger(app.get(MyLogger));
+  app.useLogger(app.get(LoggerServiceAdapter));
   await app.listen(3000);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

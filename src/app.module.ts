@@ -1,7 +1,7 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Inject, MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -17,7 +17,9 @@ import { EmailModule } from './email/email.module';
 import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
 import { ChatModule } from './chat/chat.module';
 import { LoggerModule } from './logger/logger.module';
-import LogsMiddleware from './utils/logs.middleware';
+import { ContextModule } from './context/context.module';
+import ILogger, { LoggerKey } from './logger/interfaces/logger.interface';
+import morgan from 'morgan';
 
 @Module({
   imports: [
@@ -68,16 +70,32 @@ import LogsMiddleware from './utils/logs.middleware';
     EmailModule,
     EmailSchedulingModule,
     ChatModule,
-    LoggerModule
+    LoggerModule,
+    ContextModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 // eslint-disable-next-line prettier/prettier
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
+  public constructor(
+    @Inject(LoggerKey) private logger: ILogger,
+    private configService: ConfigService,
+  ) { }
+
+  public configure(consumer: MiddlewareConsumer): void {
     consumer
-      .apply(LogsMiddleware)
+      .apply(
+        morgan(this.configService.get('NODE_ENV') === 'production' ? 'combined' : 'dev', {
+          stream: {
+            write: (message: string) => {
+              this.logger.debug(message, {
+                sourceClass: 'RequestLogger',
+              });
+            },
+          },
+        }),
+      )
       .forRoutes('*');
   }
 }
