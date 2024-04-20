@@ -3,7 +3,7 @@ import ILogger, { LoggerBaseKey } from './interfaces/logger.interface';
 import { ConfigService } from '@nestjs/config';
 import ContextStorageService, { ContextStorageServiceKey } from 'src/context/contextStorage.interface';
 import { INQUIRER } from '@nestjs/core';
-import { LogLevel, LogData } from './interfaces/log.interface';
+import { LogLevel, ILogData } from './interfaces/log.interface';
 @Injectable({ scope: Scope.TRANSIENT })
 export class LoggerService implements ILogger {
   private sourceClass: string;
@@ -28,36 +28,36 @@ export class LoggerService implements ILogger {
   public log(
     level: LogLevel,
     message: string | Error,
-    data?: LogData,
+    data?: ILogData,
     profile?: string,
   ) {
     return this.logger.log(level, message, this.getLogData(data), profile);
   }
-  public debug(message: string, data?: LogData, profile?: string) {
+  public debug(message: string, data?: ILogData, profile?: string) {
     return this.logger.debug(message, this.getLogData(data), profile);
   }
 
-  public info(message: string, data?: LogData, profile?: string) {
+  public info(message: string, data?: ILogData, profile?: string) {
     return this.logger.info(message, this.getLogData(data), profile);
   }
 
-  public warn(message: string | Error, data?: LogData, profile?: string) {
+  public warn(message: string | Error, data?: ILogData, profile?: string) {
     return this.logger.warn(message, this.getLogData(data), profile);
   }
 
-  public error(message: string | Error, data?: LogData, profile?: string) {
+  public error(message: string | Error, data?: ILogData, profile?: string) {
     return this.logger.error(message, this.getLogData(data), profile);
   }
 
-  public fatal(message: string | Error, data?: LogData, profile?: string) {
+  public fatal(message: string | Error, data?: ILogData, profile?: string) {
     return this.logger.fatal(message, this.getLogData(data), profile);
   }
 
-  public emergency(message: string | Error, data?: LogData, profile?: string) {
+  public emergency(message: string | Error, data?: ILogData, profile?: string) {
     return this.logger.emergency(message, this.getLogData(data), profile);
   }
 
-  private getLogData(data?: LogData): LogData {
+  private getLogData(data?: ILogData): ILogData {
     return {
       ...data,
       organization: data?.organization || this.organization,

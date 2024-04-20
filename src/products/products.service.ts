@@ -13,6 +13,19 @@ export class ProductsService {
   }
   async findAll() {
     this.logger.startProfile('findAll');
+    // Debug
+    this.logger.debug(
+      'I am a debug message!',
+      {
+        props: {
+          foo: 'bar',
+          baz: 'qux',
+        },
+      },
+      'getHello',
+    );
+
+
     return this.productsRepository.find()
   }
   async getAllBrands() {

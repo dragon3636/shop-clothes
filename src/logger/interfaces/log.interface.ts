@@ -6,7 +6,7 @@ export enum LogLevel {
   Info = 'infor',
   Debug = 'debug',
 }
-export interface LogData {
+export interface ILogData {
   organization?: string;
   context?: string;
   app?: string;
@@ -15,9 +15,9 @@ export interface LogData {
   error?: Error;
   props?: NodeJS.Dict<any>;
 }
-export interface Log {
+export interface ILog {
   timestamp: number;
   level: LogLevel;
   message: string;
-  data: LogData
+  data: ILogData
 }

@@ -1,5 +1,5 @@
 import winston, { level } from "winston";
-import { LogLevel, LogData } from "./interfaces/log.interface";
+import { LogLevel, ILogData } from "./interfaces/log.interface";
 import ILogger from "./interfaces/logger.interface";
 import { Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -10,8 +10,7 @@ export const WinstonLoggerTransportsKey = Symbol();
 export default class WinstonLogger implements ILogger {
   private logger: winston.Logger;
   constructor(
-    @Inject(WinstonLoggerTransportsKey) transports: winston.transport[],
-    private readonly configService: ConfigService
+    @Inject(WinstonLoggerTransportsKey) transports: winston.transport[]
   ) {
     this.logger = winston.createLogger(this.getLoggerFormatOptions(transports))
   }
@@ -24,7 +23,7 @@ export default class WinstonLogger implements ILogger {
       cont++;
     });
     return {
-      level: this.configService.get('NODE_ENV') === 'production' ? LogLevel.Info : LogLevel.Debug,
+      level: LogLevel.Debug,
       levels: levels,
       format: winston.format.combine(
         // Add timestamp and format the date
@@ -58,7 +57,7 @@ export default class WinstonLogger implements ILogger {
       rejectionHandlers: transports,
     }
   }
-  log(level: LogLevel, message: string | Error, data?: LogData, profile?: string): void {
+  log(level: LogLevel, message: string | Error, data?: ILogData, profile?: string): void {
     const logData = {
       level: level,
       message: message instanceof Error ? message.message : message,
@@ -71,27 +70,27 @@ export default class WinstonLogger implements ILogger {
       this.logger.log(logData);
     }
   }
-  public debug(message: string, data?: LogData, profile?: string) {
+  public debug(message: string, data?: ILogData, profile?: string) {
     this.log(LogLevel.Debug, message, data, profile);
   }
 
-  public info(message: string, data?: LogData, profile?: string) {
+  public info(message: string, data?: ILogData, profile?: string) {
     this.log(LogLevel.Info, message, data, profile);
   }
 
-  public warn(message: string | Error, data?: LogData, profile?: string) {
+  public warn(message: string | Error, data?: ILogData, profile?: string) {
     this.log(LogLevel.Warn, message, data, profile);
   }
 
-  public error(message: string | Error, data?: LogData, profile?: string) {
+  public error(message: string | Error, data?: ILogData, profile?: string) {
     this.log(LogLevel.Error, message, data, profile);
   }
 
-  public fatal(message: string | Error, data?: LogData, profile?: string) {
+  public fatal(message: string | Error, data?: ILogData, profile?: string) {
     this.log(LogLevel.Fatal, message, data, profile);
   }
 
-  public emergency(message: string | Error, data?: LogData, profile?: string) {
+  public emergency(message: string | Error, data?: ILogData, profile?: string) {
     this.log(LogLevel.Emergency, message, data, profile);
   }
 
