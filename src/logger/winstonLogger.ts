@@ -12,7 +12,8 @@ export default class WinstonLogger implements ILogger {
   constructor(
     @Inject(WinstonLoggerTransportsKey) transports: winston.transport[]
   ) {
-    this.logger = winston.createLogger(this.getLoggerFormatOptions(transports))
+    // Create winston logger
+    this.logger = winston.createLogger(this.getLoggerFormatOptions(transports));
   }
   private getLoggerFormatOptions(transports: winston.transport[]) {
     // Setting log levels for winston
@@ -22,6 +23,7 @@ export default class WinstonLogger implements ILogger {
       levels[level] = cont;
       cont++;
     });
+
     return {
       level: LogLevel.Debug,
       levels: levels,
@@ -55,21 +57,29 @@ export default class WinstonLogger implements ILogger {
       transports: transports,
       exceptionHandlers: transports,
       rejectionHandlers: transports,
-    }
+    };
   }
-  log(level: LogLevel, message: string | Error, data?: ILogData, profile?: string): void {
+
+  public log(
+    level: LogLevel,
+    message: string | Error,
+    data?: ILogData,
+    profile?: string,
+  ) {
     const logData = {
       level: level,
       message: message instanceof Error ? message.message : message,
       error: message instanceof Error ? message : undefined,
       ...data,
     };
+
     if (profile) {
       this.logger.profile(profile, logData);
     } else {
       this.logger.log(logData);
     }
   }
+
   public debug(message: string, data?: ILogData, profile?: string) {
     this.log(LogLevel.Debug, message, data, profile);
   }
