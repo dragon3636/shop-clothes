@@ -18,6 +18,8 @@ import { EmailSchedulingModule } from './email-scheduling/email-scheduling.modul
 import { ChatModule } from './chat/chat.module';
 import { LoggerModule } from './logger/logger.module';
 import { ContextModule } from './context/context.module';
+import { CategoriesModule } from './categories/categories.module';
+import { CaslModule } from './casl/casl.module';
 import LoggerMiddleware from './utils/middleware/logg.middleware';
 
 @Module({
@@ -70,7 +72,9 @@ import LoggerMiddleware from './utils/middleware/logg.middleware';
     EmailSchedulingModule,
     ChatModule,
     LoggerModule,
-    ContextModule
+    ContextModule,
+    CategoriesModule,
+    CaslModule
   ],
   controllers: [AppController],
   providers: [AppService],

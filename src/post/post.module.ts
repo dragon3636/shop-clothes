@@ -9,6 +9,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import type { RedisClientOptions } from 'redis';
+import { CaslModule } from 'src/casl/casl.module';
 @Module({
   imports: [
     CacheModule.registerAsync({
@@ -22,7 +23,8 @@ import type { RedisClientOptions } from 'redis';
       }),
     }),
     TypeOrmModule.forFeature([Post]),
-    SearchModule],
+    SearchModule,
+    CaslModule],
   controllers: [PostController],
   providers: [PostService, PostSearchService],
 })

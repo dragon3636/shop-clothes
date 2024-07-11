@@ -6,6 +6,7 @@ import { Post } from 'src/post/entities/post.entity';
 import PrivateFile from 'src/private-file/privateFile.entity';
 import { Category } from 'aws-sdk/clients/cloudformation';
 import GroupChat from 'src/chat/entities/group-chat.entity';
+import Role from './role.enum';
 
 @Entity()
 class User {
@@ -52,5 +53,13 @@ class User {
     }
   })
   groups?: GroupChat[];
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    array: true,
+    default: [Role.User]
+  })
+  public roles: Role[]
 }
 export default User;

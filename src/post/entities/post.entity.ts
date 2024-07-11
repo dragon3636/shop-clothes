@@ -13,6 +13,9 @@ export class Post {
   @Column('text', { array: true, })
   public paragraphs: string[];
 
+  @Column({ default: true })
+  public isPublished: boolean;
+
   @Index('post_authorId_index')
   @ManyToOne(() => User, (author: User) => author.posts)
   public author: User;

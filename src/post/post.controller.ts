@@ -9,6 +9,8 @@ import { PaginationParams } from 'src/utils/types/paginationParams';
 import { CACHE_MANAGER, CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { GET_POST_BY_ID_CACHE_KEY, GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
 import { HttpCacheInterceptor } from './httpCache.interceptor';
+import RoleGuard from 'src/users/role.guard';
+import Role from 'src/users/role.enum';
 
 @Controller('post')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -45,10 +47,12 @@ export class PostController {
   @Patch(':id')
   @UseGuards(JwtAuthenticationGuard)
   update(@Req() request: RequestWithUser, @Param() { id }: FindOneParams, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+id, updatePostDto);
+    return this.postService.update(+id, updatePostDto, request.user);
   }
 
   @Delete(':id')
+  @UseGuards(RoleGuard(Role.Admin))
+  @UseGuards(JwtAuthenticationGuard)
   remove(@Param() { id }: FindOneParams) {
     return this.postService.remove(+id);
   }

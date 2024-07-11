@@ -1,3 +1,4 @@
+import Role from 'src/users/role.enum';
 import User from '../../users/user.entity';
 export const mockedUser: User = {
   id: 1,
@@ -8,5 +9,6 @@ export const mockedUser: User = {
     id: 1,
     street: "stressName",
     city: "cityName", country: "countryName"
-  }
+  },
+  roles: [Role.User]
 }

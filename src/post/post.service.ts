@@ -11,13 +11,15 @@ import User from 'src/users/user.entity';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
+import { Action, CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.factory';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private readonly postsRepository: Repository<Post>,
     private readonly postsSearchService: PostSearchService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private caslAbilityFactory: CaslAbilityFactory
   ) { }
 
   async clearCache(): Promise<boolean> {
@@ -71,19 +73,24 @@ export class PostService {
     return this.postsRepository.findOne({ where: { id } });
   }
 
-  async update(id: number, post: UpdatePostDto) {
-    await this.postsRepository.update(id, post);
-    const updatedPost = await this.postsRepository.findOne({ where: { id }, relations: ['author'] });
-    if (updatedPost) {
-      const newBody: UpdatePostSearchBody = {
-        title: updatedPost.title,
-        paragraphs: updatedPost.paragraphs,
+  async update(id: number, rawData: UpdatePostDto, user: User) {
+    const ability = this.caslAbilityFactory.createForUser(user);
+    const post = await this.postsRepository.findOne({ where: { id }, relations: ['author'] });
+    if (ability.can(Action.Update, post)) {
+      await this.postsRepository.update(id, rawData);
+      const updatedPost = await this.postsRepository.findOne({ where: { id }, relations: ['author'] });
+      if (updatedPost) {
+        const newBody: UpdatePostSearchBody = {
+          title: updatedPost.title,
+          paragraphs: updatedPost.paragraphs,
+        }
+        await this.postsSearchService.update(updatedPost, newBody);
+        await this.clearCache();
+        return updatedPost
       }
-      await this.postsSearchService.update(updatedPost, newBody);
-      await this.clearCache();
-      return updatedPost
+      throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
     }
-    throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
+
   }
 
   async remove(id: number) {
