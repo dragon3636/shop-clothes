@@ -8,4 +8,4 @@ import { EmailModule } from 'src/email/email.module';
   controllers: [EmailSchedulingController],
   providers: [EmailSchedulingService],
 })
-export class EmailSchedulingModule { }
+export class EmailSchedulingModule {}

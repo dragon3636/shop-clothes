@@ -23,7 +23,7 @@ const userArray = [
 ];
 
 const oneUser = {
-  ...mockedUser
+  ...mockedUser,
 };
 const buffer = Buffer.from(JSON.stringify({ ok: true }));
 describe('The UsersService', () => {
@@ -52,8 +52,8 @@ describe('The UsersService', () => {
           provide: FilesService,
           useValue: {
             uploadPublicFile,
-            deletePublicFile
-          }
+            deletePublicFile,
+          },
         },
         {
           provide: PrivateFileService,
@@ -61,87 +61,86 @@ describe('The UsersService', () => {
             uploadPrivateFile,
             getPrivateFile,
             getSingedUrl,
-            getPrivateFileSignUrl
-          }
+            getPrivateFileSignUrl,
+          },
         },
         {
           provide: ConfigService,
-          useValue: mockedConfigService
+          useValue: mockedConfigService,
         },
         {
           provide: JwtService,
-          useValue: mockedJwtService
+          useValue: mockedJwtService,
         },
         {
           provide: getRepositoryToken(User),
           useValue: {
             findOne,
             findOneBy,
-            update: jest.fn().mockReturnValue(true)
-          }
-        }
+            update: jest.fn().mockReturnValue(true),
+          },
+        },
       ],
-    })
-      .compile();
+    }).compile();
     usersService = await module.get(UsersService);
-  })
+  });
   describe('when getting a user by email', () => {
     describe('and the user is matched', () => {
       let user: User;
       beforeEach(() => {
         user = new User();
         findOne.mockReturnValue(Promise.resolve(user));
-      })
+      });
       it('should return the user', async () => {
         const fetchedUser = await usersService.getByEmail('test@test.com');
         expect(fetchedUser).toEqual(user);
-      })
-    })
+      });
+    });
     describe('and the user is not matched', () => {
       beforeEach(() => {
         findOne.mockReturnValue(undefined);
-      })
+      });
       it('should throw an error', async () => {
         await expect(usersService.getByEmail('test@test.com')).rejects.toThrow();
-      })
-    })
-  })
+      });
+    });
+  });
   describe('when getting a user by id', () => {
     describe('and the user is matched', () => {
       beforeEach(() => {
         findOneBy.mockReturnValue(oneUser);
-      })
+      });
       it('should return the user', async () => {
         const fetchedUser = await usersService.getById(1);
         expect(fetchedUser).toEqual(oneUser);
-      })
-    })
+      });
+    });
     describe('and the user is not matched', () => {
       beforeEach(() => {
         findOneBy.mockReturnValue(undefined);
-      })
+      });
       it('should throw an error', async () => {
         await expect(usersService.getById(1)).rejects.toThrow();
-      })
-    })
-  })
+      });
+    });
+  });
   describe('when upload avatar', () => {
     const expectedFile = {
-      ...mockedFile
-    }
+      ...mockedFile,
+    };
     delete expectedFile.id;
     describe('and the upload success', () => {
       beforeEach(() => {
         uploadPublicFile.mockResolvedValue(expectedFile);
-        findOneBy.mockResolvedValue(mockedUser)
+        findOneBy.mockResolvedValue(mockedUser);
       });
       const expectedAvatar = {
         ...mockedUser,
-        avatar: expectedFile
-      }
+        avatar: expectedFile,
+      };
       it('should return avatar of user', async () => {
         const avatar = await usersService.addAvatar(expectedAvatar.id, Buffer.from('xxx'), 'xx.png');
-        expect(avatar).toEqual(expectedFile)
+        expect(avatar).toEqual(expectedFile);
       });
     });
   });

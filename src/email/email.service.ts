@@ -15,8 +15,8 @@ export class EmailService {
       },
       secure: false,
       debug: false,
-      logger: true
-    })
+      logger: true,
+    });
   }
   sendMail(options: Mail.Options) {
     return this.nodemailerTransport.sendMail(options);

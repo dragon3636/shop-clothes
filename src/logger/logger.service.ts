@@ -25,12 +25,7 @@ export class LoggerService implements ILogger {
     this.context = configService.get<string>('CONTEXT');
     this.app = configService.get<string>('APP');
   }
-  public log(
-    level: LogLevel,
-    message: string | Error,
-    data?: ILogData,
-    profile?: string,
-  ) {
+  public log(level: LogLevel, message: string | Error, data?: ILogData, profile?: string) {
     return this.logger.log(level, message, this.getLogData(data), profile);
   }
   public debug(message: string, data?: ILogData, profile?: string) {
@@ -64,12 +59,10 @@ export class LoggerService implements ILogger {
       context: data?.context || this.context,
       app: data?.app || this.app,
       sourceClass: data?.sourceClass || this.sourceClass,
-      correlationId:
-        data?.correlationId || this.contextStorageService.getContextId(),
+      correlationId: data?.correlationId || this.contextStorageService.getContextId(),
     };
   }
   public startProfile(id: string) {
     this.logger.startProfile(id);
   }
 }
-

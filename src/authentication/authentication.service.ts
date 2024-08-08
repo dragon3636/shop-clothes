@@ -12,11 +12,11 @@ export class AuthenticationService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
-  ) { }
+    private readonly configService: ConfigService,
+  ) {}
   public async getUserFromAuthenticationToken(token: string) {
     const payload: TokenPayload = this.jwtService.verify(token, {
-      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET')
+      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
     });
     if (payload.userId) {
       return this.usersService.getById(payload.userId);
@@ -28,7 +28,7 @@ export class AuthenticationService {
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
-        password: hashedPassword
+        password: hashedPassword,
       });
       createdUser.password = undefined;
       return createdUser;
@@ -51,11 +51,8 @@ export class AuthenticationService {
   }
 
   private async verifyPassword(plainTextPassword: string, hashedPassword: string) {
-    this.logger
-    const isPasswordMatching = await bcrypt.compare(
-      plainTextPassword,
-      hashedPassword
-    );
+    this.logger;
+    const isPasswordMatching = await bcrypt.compare(plainTextPassword, hashedPassword);
     if (!isPasswordMatching) {
       throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
     }
@@ -65,27 +62,24 @@ export class AuthenticationService {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`
+      expiresIn: `${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`,
     });
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`;
   }
   public getCookieForLogOut() {
-    return [
-      'Authentication=; HttpOnly; Path=/; Max-Age=0',
-      'Refresh=; HttpOnly; Path=/; Max-Age=0'
-    ];
+    return ['Authentication=; HttpOnly; Path=/; Max-Age=0', 'Refresh=; HttpOnly; Path=/; Max-Age=0'];
   }
 
   public getCookieWithJwtRefreshToken(userId: number) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`
+      expiresIn: `${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`,
     });
     const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`;
     return {
       cookie,
-      token
-    }
+      token,
+    };
   }
 }

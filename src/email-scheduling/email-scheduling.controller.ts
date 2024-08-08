@@ -5,7 +5,7 @@ import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard'
 
 @Controller('email-scheduling')
 export class EmailSchedulingController {
-  constructor(private readonly emailSchedulingService: EmailSchedulingService) { }
+  constructor(private readonly emailSchedulingService: EmailSchedulingService) {}
 
   @Post('schedule')
   @UseGuards(JwtAuthenticationGuard)

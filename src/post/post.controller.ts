@@ -1,4 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query, ClassSerializerInterceptor, UseInterceptors, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  Query,
+  ClassSerializerInterceptor,
+  UseInterceptors,
+  Inject,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -15,25 +29,18 @@ import Role from 'src/users/role.enum';
 @Controller('post')
 @UseInterceptors(ClassSerializerInterceptor)
 export class PostController {
-  constructor(
-    private readonly postService: PostService,
-  ) { }
+  constructor(private readonly postService: PostService) {}
 
   @Post()
   @UseGuards(JwtAuthenticationGuard)
-  create(
-    @Req() request: RequestWithUser,
-    @Body() createPostDto: CreatePostDto) {
+  create(@Req() request: RequestWithUser, @Body() createPostDto: CreatePostDto) {
     return this.postService.create(request.user, createPostDto);
   }
   @UseInterceptors(HttpCacheInterceptor)
   @CacheKey(GET_POSTS_CACHE_KEY)
   @CacheTTL(120)
   @Get()
-  findAll(
-    @Query('search') search: string,
-    @Query() { offset, limit, startId }: PaginationParams
-  ) {
+  findAll(@Query('search') search: string, @Query() { offset, limit, startId }: PaginationParams) {
     if (search) {
       return this.postService.searchForPosts(search, offset, limit, startId);
     }

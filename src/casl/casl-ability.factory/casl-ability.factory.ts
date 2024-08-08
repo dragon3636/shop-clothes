@@ -1,8 +1,8 @@
-import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from "@casl/ability";
-import { Injectable } from "@nestjs/common";
-import { Post } from "src/post/entities/post.entity";
-import Role from "src/users/role.enum";
-import User from "src/users/user.entity";
+import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
+import { Injectable } from '@nestjs/common';
+import { Post } from 'src/post/entities/post.entity';
+import Role from 'src/users/role.enum';
+import User from 'src/users/user.entity';
 export enum Action {
   Manage = 'manage',
   Create = 'create',
@@ -16,9 +16,7 @@ export type AppAbility = Ability<[Action, Subjects]>;
 @Injectable()
 export class CaslAbilityFactory {
   createForUser(user: User) {
-    const { can, cannot, build } = new AbilityBuilder<
-      Ability<[Action, Subjects]>
-    >(Ability as AbilityClass<AppAbility>);
+    const { can, cannot, build } = new AbilityBuilder<Ability<[Action, Subjects]>>(Ability as AbilityClass<AppAbility>);
 
     if (user.roles.includes(Role.Admin)) {
       can(Action.Manage, 'all'); // read-write access to everything
@@ -31,8 +29,7 @@ export class CaslAbilityFactory {
 
     return build({
       // Read https://casl.js.org/v6/en/guide/subject-type-detection#use-classes-as-subject-types for details
-      detectSubjectType: (item) =>
-        item.constructor as ExtractSubjectType<Subjects>,
+      detectSubjectType: (item) => item.constructor as ExtractSubjectType<Subjects>,
     });
   }
 }

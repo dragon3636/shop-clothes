@@ -1,17 +1,15 @@
-import winston, { level } from "winston";
-import { LogLevel, ILogData } from "./interfaces/log.interface";
-import ILogger from "./interfaces/logger.interface";
-import { Inject, Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import winston, { level } from 'winston';
+import { LogLevel, ILogData } from './interfaces/log.interface';
+import ILogger from './interfaces/logger.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 export const WinstonLoggerTransportsKey = Symbol();
 
 @Injectable()
 export default class WinstonLogger implements ILogger {
   private logger: winston.Logger;
-  constructor(
-    @Inject(WinstonLoggerTransportsKey) transports: winston.transport[]
-  ) {
+  constructor(@Inject(WinstonLoggerTransportsKey) transports: winston.transport[]) {
     // Create winston logger
     this.logger = winston.createLogger(this.getLoggerFormatOptions(transports));
   }
@@ -60,12 +58,7 @@ export default class WinstonLogger implements ILogger {
     };
   }
 
-  public log(
-    level: LogLevel,
-    message: string | Error,
-    data?: ILogData,
-    profile?: string,
-  ) {
+  public log(level: LogLevel, message: string | Error, data?: ILogData, profile?: string) {
     const logData = {
       level: level,
       message: message instanceof Error ? message.message : message,
@@ -107,5 +100,4 @@ export default class WinstonLogger implements ILogger {
   public startProfile(id: string) {
     this.logger.profile(id);
   }
-
 }

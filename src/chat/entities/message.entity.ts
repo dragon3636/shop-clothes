@@ -1,4 +1,3 @@
-
 import User from 'src/users/user.entity';
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import GroupChat from './group-chat.entity';
@@ -15,7 +14,7 @@ class Message {
   public author: User;
 
   @OneToOne(() => GroupChat)
-  group: GroupChat
+  group: GroupChat;
 }
 
 export default Message;

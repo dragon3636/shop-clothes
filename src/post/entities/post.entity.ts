@@ -1,6 +1,5 @@
-
-import User from "src/users/user.entity";
-import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import User from 'src/users/user.entity';
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Post {
@@ -10,7 +9,7 @@ export class Post {
   @Column()
   public title: string;
 
-  @Column('text', { array: true, })
+  @Column('text', { array: true })
   public paragraphs: string[];
 
   @Column({ default: true })

@@ -5,10 +5,10 @@ class PublicFile {
   public id?: number;
 
   @Column()
-  public url: string
+  public url: string;
 
   @Column()
-  public key: string
+  public key: string;
 }
 
 export default PublicFile;

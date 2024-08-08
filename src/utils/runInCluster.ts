@@ -1,12 +1,9 @@
-
 import cluster from 'cluster';
 import { availableParallelism } from 'os';
 import process from 'process';
 
 const numCPUs = availableParallelism();
-export function runInCluster(
-  bootstrap: () => Promise<void>
-) {
+export function runInCluster(bootstrap: () => Promise<void>) {
   if (cluster.isPrimary) {
     console.log(`Primary ${process.pid} is running`);
 
@@ -19,7 +16,7 @@ export function runInCluster(
       console.log(`worker ${worker.process.pid} died`);
     });
   } else {
-    bootstrap()
+    bootstrap();
   }
   console.log(`Worker ${process.pid} started`);
 }

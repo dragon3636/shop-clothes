@@ -19,13 +19,14 @@ import { CaslModule } from 'src/casl/casl.module';
         store: redisStore,
         host: configService.get('REDIS_HOST'),
         port: configService.get('REDIS_PORT'),
-        ttl: 1200
+        ttl: 1200,
       }),
     }),
     TypeOrmModule.forFeature([Post]),
     SearchModule,
-    CaslModule],
+    CaslModule,
+  ],
   controllers: [PostController],
   providers: [PostService, PostSearchService],
 })
-export class PostModule { }
+export class PostModule {}

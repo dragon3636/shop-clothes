@@ -8,4 +8,4 @@ import { CaslModule } from 'src/casl/casl.module';
   controllers: [CategoriesController],
   providers: [CategoriesService],
 })
-export class CategoriesModule { }
+export class CategoriesModule {}

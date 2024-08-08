@@ -15,17 +15,17 @@ import { JwtStrategy } from './jwt.strategy';
     UsersModule,
     PassportModule,
     ConfigModule,
-    JwtModule.registerAsync(({
+    JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get("JWT_ACCESS_TOKEN_SECRET"),
+        secret: configService.get('JWT_ACCESS_TOKEN_SECRET'),
         signOptions: {
           expiresIn: `${configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`,
         },
-      })
-    }))
+      }),
+    }),
   ],
-  exports: [AuthenticationService]
+  exports: [AuthenticationService],
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {}

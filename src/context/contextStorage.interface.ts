@@ -1,4 +1,4 @@
-export const ContextStorageServiceKey = Symbol()
+export const ContextStorageServiceKey = Symbol();
 export default interface ContextStorageService {
   setContextId(contextId: string): void;
   getContextId(): string;

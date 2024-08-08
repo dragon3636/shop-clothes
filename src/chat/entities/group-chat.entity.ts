@@ -1,4 +1,3 @@
-
 import User from 'src/users/user.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -9,19 +8,19 @@ class GroupChat {
 
   @ManyToMany(() => User, (groups) => groups.id)
   @JoinTable({
-    name: "group_memebers", // table name for the junction table of this relation
+    name: 'group_memebers', // table name for the junction table of this relation
     joinColumn: {
-      name: "group",
-      referencedColumnName: "id"
+      name: 'group',
+      referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: "member",
-      referencedColumnName: "id"
-    }
+      name: 'member',
+      referencedColumnName: 'id',
+    },
   })
-  members: User[]
-  @OneToOne(type => User)
-  admin: User
+  members: User[];
+  @OneToOne((type) => User)
+  admin: User;
 }
 
 export default GroupChat;

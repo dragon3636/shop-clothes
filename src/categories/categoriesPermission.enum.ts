@@ -1,6 +1,5 @@
-
 enum CategoriesPermission {
-  CreateCategory = 'CreateCategory'
+  CreateCategory = 'CreateCategory',
 }
 
 export default CategoriesPermission;

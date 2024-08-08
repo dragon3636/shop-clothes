@@ -9,6 +9,6 @@ export default class FileTransport {
       zippedArchive: true,
       maxSize: '20m',
       maxFiles: '14d',
-    })
+    });
   }
 }

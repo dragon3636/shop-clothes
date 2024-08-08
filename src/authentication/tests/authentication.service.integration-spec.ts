@@ -19,29 +19,30 @@ describe('The Authetication', () => {
     bcryptCompare = jest.fn().mockReturnValue(true);
     (bcrypt.compare as jest.Mock) = bcryptCompare;
     userData = {
-      ...mockedUser
-    }
+      ...mockedUser,
+    };
     findUser = jest.fn().mockReturnValue(userData);
     const usersRepository = {
-      findOne: findUser
-    }
+      findOne: findUser,
+    };
     const module = await Test.createTestingModule({
       providers: [
         UsersService,
         AuthenticationService,
         {
           provide: ConfigService,
-          useValue: mockedConfigService
+          useValue: mockedConfigService,
         },
         {
           provide: JwtService,
-          useValue: mockedJwtService
-        }, {
+          useValue: mockedJwtService,
+        },
+        {
           provide: getRepositoryToken(User),
-          useValue: usersRepository
-        }
-      ]
-    }).compile()
+          useValue: usersRepository,
+        },
+      ],
+    }).compile();
     authenticationService = await module.get(AuthenticationService);
     usersService = await module.get(UsersService);
   });
@@ -65,7 +66,7 @@ describe('The Authetication', () => {
         });
         it('should return the user data ', async () => {
           const user = await authenticationService.getAuthenticatedUser('user@emai.com', 'hash');
-          expect(user).toBe(userData)
+          expect(user).toBe(userData);
         });
       });
       describe('and the user isn not found in the databasse', () => {
@@ -74,10 +75,9 @@ describe('The Authetication', () => {
         });
         it('should throw an error', async () => {
           const user = await authenticationService.getAuthenticatedUser('love@email.com', 'strongpassword');
-          expect(user).rejects.toThrow()
+          expect(user).rejects.toThrow();
         });
       });
     });
   });
-
 });

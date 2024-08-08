@@ -1,4 +1,14 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket, WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, OnGatewayInit, WsResponse } from '@nestjs/websockets';
+import {
+  WebSocketGateway,
+  SubscribeMessage,
+  MessageBody,
+  ConnectedSocket,
+  WebSocketServer,
+  OnGatewayDisconnect,
+  OnGatewayConnection,
+  OnGatewayInit,
+  WsResponse,
+} from '@nestjs/websockets';
 import { ChatService } from './chat.service';
 import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
@@ -13,9 +23,9 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   private readonly logger = new Logger(ChatGateway.name);
   @WebSocketServer()
   server: Server;
-  constructor(private readonly chatService: ChatService) { }
+  constructor(private readonly chatService: ChatService) {}
   afterInit(server: any) {
-    this.logger.log("Initialized");
+    this.logger.log('Initialized');
   }
   handleDisconnect(client: any) {
     this.logger.log(`Cliend id:${client.id} disconnected`);
@@ -28,7 +38,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
   @SubscribeMessage('events')
   findAll(@MessageBody() data: any): Observable<WsResponse<number>> {
-    return from([1, 2, 3]).pipe(map(item => ({ event: 'events', data: item })));
+    return from([1, 2, 3]).pipe(map((item) => ({ event: 'events', data: item })));
   }
 
   @SubscribeMessage('identity')
@@ -36,35 +46,30 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     return data;
   }
   @SubscribeMessage('send_message')
-  async listenForMessages(
-    @MessageBody() content: string,
-    @ConnectedSocket() socket: Socket,
-  ) {
+  async listenForMessages(@MessageBody() content: string, @ConnectedSocket() socket: Socket) {
     const author = await this.chatService.getUserFromSocket(socket);
 
     this.server.sockets.emit('receive_message', {
       content,
-      author
+      author,
     });
   }
 
   @SubscribeMessage('request_all_messages')
-  async requestAllMessages(
-    @ConnectedSocket() socket: Socket,
-  ) {
+  async requestAllMessages(@ConnectedSocket() socket: Socket) {
     const author = await this.chatService.getUserFromSocket(socket);
     await this.chatService.getUserFromSocket(socket);
     const messages = await this.chatService.getAllMessages(author);
     socket.emit('send_all_messages', messages);
   }
 
-  @SubscribeMessage("ping")
+  @SubscribeMessage('ping')
   handleMessage(client: any, data: any) {
     this.logger.log(`Message received from client id: ${client.id}`);
     this.logger.debug(`Payload: ${data}`);
     return {
-      event: "pong",
-      data: "Wrong data that will make the test fail",
+      event: 'pong',
+      data: 'Wrong data that will make the test fail',
     };
   }
 }

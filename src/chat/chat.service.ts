@@ -14,11 +14,11 @@ export class ChatService {
     private readonly authenticationService: AuthenticationService,
     @InjectRepository(Message)
     private messagesRepository: Repository<Message>,
-  ) { }
+  ) {}
   async saveMessage(content: string, author: User) {
     const newMessage = await this.messagesRepository.create({
       content,
-      author
+      author,
     });
     await this.messagesRepository.save(newMessage);
     return newMessage;
@@ -27,9 +27,9 @@ export class ChatService {
   async getAllMessages(user: User) {
     return this.messagesRepository.find({
       where: {
-        author: user
+        author: user,
       },
-      relations: ['author']
+      relations: ['author'],
     });
   }
   async getUserFromSocket(socket: Socket) {

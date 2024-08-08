@@ -1,0 +1,4 @@
+dist
+.docker
+.vscode
+logs

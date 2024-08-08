@@ -1,4 +1,4 @@
 enum PostsPermission {
-  DeletePost = 'DeletePost'
+  DeletePost = 'DeletePost',
 }
 export default PostsPermission;

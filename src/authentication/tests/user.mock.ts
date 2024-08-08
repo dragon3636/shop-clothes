@@ -2,13 +2,14 @@ import Role from 'src/users/role.enum';
 import User from '../../users/user.entity';
 export const mockedUser: User = {
   id: 1,
-  email: "user@email.com",
-  password: "hash",
-  name: "John",
+  email: 'user@email.com',
+  password: 'hash',
+  name: 'John',
   address: {
     id: 1,
-    street: "stressName",
-    city: "cityName", country: "countryName"
+    street: 'stressName',
+    city: 'cityName',
+    country: 'countryName',
   },
-  roles: [Role.User]
-}
+  roles: [Role.User],
+};

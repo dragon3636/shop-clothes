@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsNotEmpty, IsDateString } from "class-validator";
+import { IsEmail, IsString, IsNotEmpty, IsDateString } from 'class-validator';
 
 export class CreateEmailSchedulingDto {
   @IsEmail()

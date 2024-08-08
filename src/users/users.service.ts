@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import User from './user.entity';
@@ -14,8 +20,8 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
     private readonly filesService: FilesService,
     private readonly privateFileService: PrivateFileService,
-    private dataSource: DataSource
-  ) { }
+    private dataSource: DataSource,
+  ) {}
   async getByEmail(email: string): Promise<User | null> {
     const user = await this.usersRepository.findOne({ where: { email } });
     if (user) {
@@ -44,7 +50,7 @@ export class UsersService {
     const user = await this.getById(userId);
     await this.usersRepository.update(userId, {
       ...user,
-      avatar
+      avatar,
     });
     return avatar;
   }
@@ -57,17 +63,21 @@ export class UsersService {
   }
   async deleteAvatar(userId: number) {
     const user = await this.getById(userId);
-    const fileId = user.avatar?.id
+    const fileId = user.avatar?.id;
     if (fileId) {
       const queryRunner = this.dataSource.createQueryRunner();
 
       await queryRunner.connect();
       await queryRunner.startTransaction();
       try {
-        await queryRunner.manager.update(User, { id: userId }, {
-          ...user,
-          avatar: null,
-        })
+        await queryRunner.manager.update(
+          User,
+          { id: userId },
+          {
+            ...user,
+            avatar: null,
+          },
+        );
         await this.filesService.deletePublicFileWithQueryRunner(fileId, queryRunner);
       } catch (error) {
         await queryRunner.rollbackTransaction();
@@ -83,30 +93,27 @@ export class UsersService {
   async getPrivateFile(userId: number, fileId: number) {
     const file = await this.privateFileService.getPrivateFile(fileId);
     if (file.fileInfo.owner.id === userId) {
-      return file
+      return file;
     }
     throw new UnauthorizedException();
   }
   async getPrivateFileSignedUrl(userId: number, fileId: number) {
     const file = await this.privateFileService.getPrivateFileSignUrl(fileId);
     if (file.fileInfo.owner.id === userId) {
-      return file
+      return file;
     }
     throw new UnauthorizedException();
   }
   async setCurrentRefreshToken(refreshToken: string, userId: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
     await this.usersRepository.update(userId, {
-      currentHashedRefreshToken
+      currentHashedRefreshToken,
     });
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, userId: number) {
     const user = await this.getById(userId);
 
-    const isRefreshTokenMatching = await bcrypt.compare(
-      refreshToken,
-      user.currentHashedRefreshToken
-    );
+    const isRefreshTokenMatching = await bcrypt.compare(refreshToken, user.currentHashedRefreshToken);
 
     if (isRefreshTokenMatching) {
       return user;
@@ -115,7 +122,7 @@ export class UsersService {
 
   async removeRefreshToken(userId: number) {
     return this.usersRepository.update(userId, {
-      currentHashedRefreshToken: null
+      currentHashedRefreshToken: null,
     });
   }
 }

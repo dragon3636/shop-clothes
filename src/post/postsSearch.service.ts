@@ -7,8 +7,8 @@ import PostCountResult from './types/postCountBody.interface';
 
 @Injectable()
 export class PostSearchService {
-  index = 'posts'
-  constructor(private readonly elasticsearchService: ElasticsearchService) { }
+  index = 'posts';
+  constructor(private readonly elasticsearchService: ElasticsearchService) {}
   async indexPost(post: Post) {
     return this.elasticsearchService.index<PostSearchResult, PostSearchBody>({
       index: this.index,
@@ -16,9 +16,9 @@ export class PostSearchService {
         id: post.id,
         title: post.title,
         paragraphs: post.paragraphs,
-        authorId: post.author.id
-      }
-    })
+        authorId: post.author.id,
+      },
+    });
   }
 
   async search(text: string, offset?: number, limit?: number, startId = 0) {
@@ -36,32 +36,32 @@ export class PostSearchService {
             should: {
               multi_match: {
                 query: text,
-                fields: ['title', 'paragraphs']
-              }
+                fields: ['title', 'paragraphs'],
+              },
             },
             filter: {
               range: {
                 id: {
-                  gt: startId
-                }
-              }
-            }
-          }
+                  gt: startId,
+                },
+              },
+            },
+          },
         },
         sort: {
           id: {
-            order: 'asc'
-          }
-        }
-      }
-    })
+            order: 'asc',
+          },
+        },
+      },
+    });
     const hits = body.hits.hits;
     const count = body.hits.total.value;
     const results = hits.map((item) => item._source);
     return {
       count: startId ? separateCount : count,
-      results
-    }
+      results,
+    };
   }
 
   async remove(postId: number) {
@@ -71,10 +71,10 @@ export class PostSearchService {
         query: {
           match: {
             id: postId,
-          }
-        }
-      }
-    })
+          },
+        },
+      },
+    });
   }
   async update(post: Post, newBody: UpdatePostSearchBody) {
     const script = Object.entries(newBody).reduce((result, [key, value]) => {
@@ -86,13 +86,13 @@ export class PostSearchService {
         query: {
           match: {
             id: post.id,
-          }
+          },
         },
         script: {
-          inline: script
-        }
-      }
-    })
+          inline: script,
+        },
+      },
+    });
   }
 
   async count(query: string, fields: string[]) {
@@ -102,11 +102,11 @@ export class PostSearchService {
         query: {
           multi_match: {
             query,
-            fields
-          }
-        }
-      }
-    })
+            fields,
+          },
+        },
+      },
+    });
     return body.count;
   }
 }

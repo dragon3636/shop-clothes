@@ -8,15 +8,15 @@ import * as AWS from 'aws-sdk';
 import User from '../users/user.entity';
 import { mockedUser } from '../authentication/tests/user.mock';
 import { mockedPrivateFile } from 'src/authentication/tests/publicFile.mock';
-import * as mime from 'mime-types'
-const s3 = new AWS.S3()
+import * as mime from 'mime-types';
+const s3 = new AWS.S3();
 const mockedObjectS3 = {
-  Key: 'key-object'
-}
+  Key: 'key-object',
+};
 const fileData = {
   buffer: Buffer.from(JSON.stringify({ ok: true })),
-  filename: 'sample.jpg'
-}
+  filename: 'sample.jpg',
+};
 
 describe('PrivateFileService', () => {
   let service: PrivateFileService;
@@ -33,23 +33,25 @@ describe('PrivateFileService', () => {
     mineLook = jest.fn().mockReturnValue('image/jpeg');
     (mime.lookup as jest.Mock) = mineLook;
     userData = {
-      ...mockedUser
-    }
+      ...mockedUser,
+    };
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PrivateFileService, {
-        provide: getRepositoryToken(PrivateFile),
-        useValue: {
-          findOne,
-          findOneBy,
-          create: jest.fn().mockReturnValue(mockedPrivateFile),
-          save: jest.fn().mockReturnValue(true),
-          update: jest.fn().mockReturnValue(true)
+      providers: [
+        PrivateFileService,
+        {
+          provide: getRepositoryToken(PrivateFile),
+          useValue: {
+            findOne,
+            findOneBy,
+            create: jest.fn().mockReturnValue(mockedPrivateFile),
+            save: jest.fn().mockReturnValue(true),
+            update: jest.fn().mockReturnValue(true),
+          },
         },
-      },
         {
           provide: ConfigService,
-          useValue: mockedConfigService
-        }
+          useValue: mockedConfigService,
+        },
       ],
     }).compile();
 

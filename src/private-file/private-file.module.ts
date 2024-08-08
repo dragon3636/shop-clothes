@@ -5,11 +5,8 @@ import { PrivateFileService } from './private-file.service';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([PrivateFile]),
-    ConfigModule,
-  ],
+  imports: [TypeOrmModule.forFeature([PrivateFile]), ConfigModule],
   providers: [PrivateFileService],
-  exports: [PrivateFileService]
+  exports: [PrivateFileService],
 })
-export class PrivateFileModule { }
+export class PrivateFileModule {}

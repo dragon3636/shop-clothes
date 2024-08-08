@@ -7,12 +7,7 @@ export default class SlackTransport {
       level: LogLevel.Fatal,
       webhookUrl: webhookUrl,
       formatter: (info) => {
-        const title =
-          '[' +
-          info.timestamp +
-          '] Fatal error registered [' +
-          info.data.label +
-          ']';
+        const title = '[' + info.timestamp + '] Fatal error registered [' + info.data.label + ']';
         return {
           text: title,
           blocks: [
@@ -36,10 +31,7 @@ export default class SlackTransport {
           attachments: [
             {
               type: 'mrkdwn',
-              text:
-                info.data && info.data.error
-                  ? '*Stack:* ' + info.data.error.stack
-                  : undefined,
+              text: info.data && info.data.error ? '*Stack:* ' + info.data.error.stack : undefined,
             },
             {
               type: 'mrkdwn',

@@ -1,4 +1,3 @@
-
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
@@ -12,8 +11,7 @@ import getLogLevels from './utils/getLogLevels';
 import LoggerServiceAdapter from './logger/LoggerServiceAdapter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-  });
+  const app = await NestFactory.create(AppModule, {});
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
 
@@ -24,7 +22,7 @@ async function bootstrap() {
     region: configService.get('AWS_REGION'),
   });
 
-  // use apdaper 
+  // use apdaper
   const redisIoAdapter = new RedisIoAdapter(app, configService);
   await redisIoAdapter.connectToRedis();
 

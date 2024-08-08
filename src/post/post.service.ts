@@ -19,24 +19,24 @@ export class PostService {
     @InjectRepository(Post) private readonly postsRepository: Repository<Post>,
     private readonly postsSearchService: PostSearchService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private caslAbilityFactory: CaslAbilityFactory
-  ) { }
+    private caslAbilityFactory: CaslAbilityFactory,
+  ) {}
 
   async clearCache(): Promise<boolean> {
     const keys: string[] = await this.cacheManager.store.keys();
-    if (keys.length) return true
+    if (keys.length) return true;
     keys.forEach(async (key) => {
       if (key.startsWith(GET_POSTS_CACHE_KEY)) {
         await this.cacheManager.del(key);
       }
-    })
+    });
     return true;
   }
 
   async create(user: User, createPostDto: CreatePostDto) {
     const newPost = await this.postsRepository.create({
       ...createPostDto,
-      author: user
+      author: user,
     });
     const savePost = await this.postsRepository.save(newPost);
     await this.postsSearchService.indexPost(savePost);
@@ -65,8 +65,8 @@ export class PostService {
     });
     return {
       items,
-      count: startId ? separateCount : count
-    }
+      count: startId ? separateCount : count,
+    };
   }
 
   getPostById(id: number) {
@@ -83,14 +83,13 @@ export class PostService {
         const newBody: UpdatePostSearchBody = {
           title: updatedPost.title,
           paragraphs: updatedPost.paragraphs,
-        }
+        };
         await this.postsSearchService.update(updatedPost, newBody);
         await this.clearCache();
-        return updatedPost
+        return updatedPost;
       }
       throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
     }
-
   }
 
   async remove(id: number) {
@@ -102,22 +101,21 @@ export class PostService {
 
   async searchForPosts(text: string, offset?: number, limit?: number, startId?: number) {
     const { count, results } = await this.postsSearchService.search(text, offset, limit, startId);
-    const ids = results.map(result => result.id);
+    const ids = results.map((result) => result.id);
     if (!ids.length) {
       return {
         items: [],
-        count
-      }
+        count,
+      };
     }
-    const items = await this.postsRepository
-      .find({
-        where: { id: In(ids) },
-        relations: ['author']
-      });
+    const items = await this.postsRepository.find({
+      where: { id: In(ids) },
+      relations: ['author'],
+    });
     return {
       items,
-      count
-    }
+      count,
+    };
   }
 
   async deletePost(id: number) {
@@ -130,6 +128,6 @@ export class PostService {
   }
 
   async getPostsWithParagraph(paragraph: string) {
-    return this.postsRepository.query("SELECT * FROM post WHERE $1= ANY(paragraph)", [paragraph]);
+    return this.postsRepository.query('SELECT * FROM post WHERE $1= ANY(paragraph)', [paragraph]);
   }
 }

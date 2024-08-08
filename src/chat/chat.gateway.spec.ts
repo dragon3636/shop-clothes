@@ -1,26 +1,27 @@
-import { INestApplication } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
-import { ChatGateway } from "./chat.gateway";
+import { INestApplication } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
+import { ChatGateway } from './chat.gateway';
 import { io, Socket } from 'socket.io-client';
-import { getRepositoryToken } from "@nestjs/typeorm";
-import User from "src/users/user.entity";
-import { UsersService } from "src/users/users.service";
+import { getRepositoryToken } from '@nestjs/typeorm';
+import User from 'src/users/user.entity';
+import { UsersService } from 'src/users/users.service';
 async function createNestApp(...gateways: any): Promise<INestApplication> {
   const testingModule = await Test.createTestingModule({
     providers: [
       ChatGateway,
       {
         provide: UsersService,
-        useValue: {}
+        useValue: {},
       },
       {
         provide: getRepositoryToken(User),
         useValue: {},
-      }],
+      },
+    ],
   }).compile();
   return testingModule.createNestApplication();
 }
-describe("ChatGateway", () => {
+describe('ChatGateway', () => {
   let gateway: ChatGateway;
   let app: INestApplication;
   let ioClient: Socket;
@@ -30,9 +31,9 @@ describe("ChatGateway", () => {
     // Get the gateway instance from the app instance
     gateway = app.get<ChatGateway>(ChatGateway);
     // Create a new client that will interact with the gateway
-    ioClient = io("http://localhost:3000", {
+    ioClient = io('http://localhost:3000', {
       autoConnect: false,
-      transports: ["websocket", "polling"],
+      transports: ['websocket', 'polling'],
     });
 
     app.listen(3000);
@@ -40,21 +41,21 @@ describe("ChatGateway", () => {
   afterAll(async () => {
     await app.close();
   });
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(gateway).toBeDefined();
   });
   it('should emit "pong" on "ping"', async () => {
     ioClient.connect();
-    ioClient.emit("ping", "Hello world!");
+    ioClient.emit('ping', 'Hello world!');
     await new Promise<void>((resolve) => {
-      ioClient.on("connect", () => {
-        console.log("connected");
+      ioClient.on('connect', () => {
+        console.log('connected');
       });
-      ioClient.on("pong", (data) => {
-        expect(data).toBe("Hello world!");
+      ioClient.on('pong', (data) => {
+        expect(data).toBe('Hello world!');
         resolve();
       });
     });
     ioClient.disconnect();
   });
-})
+});

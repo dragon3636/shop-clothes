@@ -12,11 +12,11 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
         auth: {
           username: configService.get('ELASTICSEARCH_USERNAME'),
           password: configService.get('ELASTICSEARCH_PASSWORD'),
-        }
+        },
       }),
       inject: [ConfigService],
     }),
   ],
   exports: [ElasticsearchModule],
 })
-export class SearchModule { }
+export class SearchModule {}

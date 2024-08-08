@@ -1,5 +1,14 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import Address from './address.entity';
 import PublicFile from 'src/files/entities/publicFile.entity';
 import { Post } from 'src/post/entities/post.entity';
@@ -38,19 +47,19 @@ class User {
   public posts?: Post[];
 
   @OneToMany(() => PrivateFile, (file: PrivateFile) => file.id)
-  public files?: PrivateFile[]
+  public files?: PrivateFile[];
 
-  @ManyToMany(type => GroupChat)
+  @ManyToMany((type) => GroupChat)
   @JoinTable({
-    name: "group_memebers", // table name for the junction table of this relation
+    name: 'group_memebers', // table name for the junction table of this relation
     joinColumn: {
-      name: "member",
-      referencedColumnName: "id"
+      name: 'member',
+      referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: "group",
-      referencedColumnName: "id"
-    }
+      name: 'group',
+      referencedColumnName: 'id',
+    },
   })
   groups?: GroupChat[];
 
@@ -58,8 +67,8 @@ class User {
     type: 'enum',
     enum: Role,
     array: true,
-    default: [Role.User]
+    default: [Role.User],
   })
-  public roles: Role[]
+  public roles: Role[];
 }
 export default User;

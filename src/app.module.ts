@@ -1,7 +1,7 @@
-import { Inject, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -37,7 +37,7 @@ import LoggerMiddleware from './utils/middleware/logg.middleware';
         JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
         JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
         JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-        // 
+        //
         AWS_REGION: Joi.string().required(),
         AWS_ACCESS_KEY_ID: Joi.string().required(),
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
@@ -74,16 +74,13 @@ import LoggerMiddleware from './utils/middleware/logg.middleware';
     LoggerModule,
     ContextModule,
     CategoriesModule,
-    CaslModule
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-// eslint-disable-next-line prettier/prettier
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

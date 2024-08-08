@@ -19,5 +19,5 @@ export interface ILog {
   timestamp: number;
   level: LogLevel;
   message: string;
-  data: ILogData
+  data: ILogData;
 }

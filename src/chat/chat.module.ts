@@ -8,11 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import GroupChat from './entities/group-chat.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Message, GroupChat]),
-    AuthenticationModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Message, GroupChat]), AuthenticationModule],
   providers: [ChatGateway, ChatService],
   controllers: [ChatController],
 })
-export class ChatModule { }
+export class ChatModule {}

@@ -7,13 +7,9 @@ import { FilesModule } from 'src/files/files.module';
 import { PrivateFileModule } from 'src/private-file/private-file.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User]),
-    FilesModule,
-    PrivateFileModule
-  ],
+  imports: [TypeOrmModule.forFeature([User]), FilesModule, PrivateFileModule],
   providers: [UsersService],
   exports: [UsersService],
   controllers: [UsersController],
 })
-export class UsersModule { }
+export class UsersModule {}

@@ -1,4 +1,3 @@
-
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import ProductCategory from '../productCategories/productCategory.entity';
 import { CarProperties } from './types/carProperties.interface';
@@ -16,7 +15,7 @@ class Product {
   public category: ProductCategory;
 
   @Column({
-    type: 'jsonb'
+    type: 'jsonb',
   })
   public properties: CarProperties | BookProperties;
 }

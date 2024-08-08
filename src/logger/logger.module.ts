@@ -13,7 +13,7 @@ import LoggerServiceAdapter from './LoggerServiceAdapter';
   providers: [
     {
       provide: LoggerBaseKey,
-      useClass: WinstonLogger
+      useClass: WinstonLogger,
     },
     {
       provide: LoggerKey,
@@ -28,24 +28,23 @@ import LoggerServiceAdapter from './LoggerServiceAdapter';
       provide: WinstonLoggerTransportsKey,
       useFactory: (configService: ConfigService) => {
         const transports = [];
-        const isProduction = configService.get('NODE_ENV') === 'production'
+        const isProduction = configService.get('NODE_ENV') === 'production';
         transports.push(FileTransport.create());
         if (isProduction) {
+          console.log("xxxxxx");
+
           const slackWebhookUrl = configService.get('SLACK_INC_WEBHOOK_URL');
           if (slackWebhookUrl) {
-            transports.push(
-              SlackTransport.create(slackWebhookUrl),
-            );
+            transports.push(SlackTransport.create(slackWebhookUrl));
           }
         } else {
           transports.push(ConsoleTransport.createColorize());
         }
         return transports;
       },
-      inject: [ConfigService]
-    }
+      inject: [ConfigService],
+    },
   ],
   exports: [LoggerKey, LoggerServiceAdapter],
-
 })
 export class LoggerModule { }
