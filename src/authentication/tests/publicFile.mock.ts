@@ -1,6 +1,7 @@
-import PublicFile from 'src/files/entities/publicFile.entity';
-import PrivateFile from 'src/private-file/privateFile.entity';
 import { mockedUser } from './user.mock';
+
+import PublicFile from '@/files/entities/publicFile.entity';
+import PrivateFile from '@/private-file/privateFile.entity';
 
 export const mockedFile: PublicFile = {
   id: 1,

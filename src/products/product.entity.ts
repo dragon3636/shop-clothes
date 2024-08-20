@@ -1,7 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import ProductCategory from '../productCategories/productCategory.entity';
-import { CarProperties } from './types/carProperties.interface';
+
 import { BookProperties } from './types/bookProperties.interface';
+import { CarProperties } from './types/carProperties.interface';
+import ProductCategory from '../productCategories/productCategory.entity';
 
 @Entity()
 class Product {

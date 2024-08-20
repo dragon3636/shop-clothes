@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import ContextStorageService from './contextStorage.interface';
 import { CLS_ID, ClsService } from 'nestjs-cls';
+
+import ContextStorageService from './contextStorage.interface';
 
 @Injectable()
 export class ClsContextStorageService implements ContextStorageService {

@@ -1,4 +1,5 @@
 import * as winston from 'winston';
+
 import { LogLevel } from '../interfaces/log.interface';
 
 enum LogColors {

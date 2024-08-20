@@ -14,12 +14,13 @@ import {
   UseInterceptors,
   SerializeOptions,
 } from '@nestjs/common';
+import { Response } from 'express';
+
 import { AuthenticationService } from './authentication.service';
 import RegisterDto from './dto/RegisterDto.dto';
+import JwtAuthenticationGuard from './jwt-authentication.guard';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import RequestWithUser from './requestWithUser.interface';
-import { Response } from 'express';
-import JwtAuthenticationGuard from './jwt-authentication.guard';
 import { UsersService } from '../users/users.service';
 
 @Controller('authentication')

@@ -1,8 +1,9 @@
-import winston, { level } from 'winston';
-import { LogLevel, ILogData } from './interfaces/log.interface';
-import ILogger from './interfaces/logger.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import winston, { level } from 'winston';
+
+import { LogLevel, ILogData } from './interfaces/log.interface';
+import ILogger from './interfaces/logger.interface';
 
 export const WinstonLoggerTransportsKey = Symbol();
 

@@ -1,12 +1,14 @@
 import { Global, Module } from '@nestjs/common';
-import { LoggerService } from './logger.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import ILogger, { LoggerBaseKey, LoggerKey } from './interfaces/logger.interface';
-import WinstonLogger, { WinstonLoggerTransportsKey } from './winstonLogger';
+import { LoggerService } from './logger.service';
+import LoggerServiceAdapter from './LoggerServiceAdapter';
 import ConsoleTransport from './transports/consoleTransport';
 import FileTransport from './transports/fileTransport';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import SlackTransport from './transports/slackTransport';
-import LoggerServiceAdapter from './LoggerServiceAdapter';
+import WinstonLogger, { WinstonLoggerTransportsKey } from './winstonLogger';
+
 @Global()
 @Module({
   imports: [ConfigModule],
@@ -31,7 +33,7 @@ import LoggerServiceAdapter from './LoggerServiceAdapter';
         const isProduction = configService.get('NODE_ENV') === 'production';
         transports.push(FileTransport.create());
         if (isProduction) {
-          console.log("xxxxxx");
+          console.log('xxxxxx');
 
           const slackWebhookUrl = configService.get('SLACK_INC_WEBHOOK_URL');
           if (slackWebhookUrl) {
@@ -47,4 +49,4 @@ import LoggerServiceAdapter from './LoggerServiceAdapter';
   ],
   exports: [LoggerKey, LoggerServiceAdapter],
 })
-export class LoggerModule { }
+export class LoggerModule {}

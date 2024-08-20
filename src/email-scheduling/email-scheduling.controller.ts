@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { EmailSchedulingService } from './email-scheduling.service';
+
 import { CreateEmailSchedulingDto } from './dto/create-email-scheduling.dto';
-import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
+import { EmailSchedulingService } from './email-scheduling.service';
+
+import JwtAuthenticationGuard from '@/authentication/jwt-authentication.guard';
 
 @Controller('email-scheduling')
 export class EmailSchedulingController {

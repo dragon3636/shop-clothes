@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
+
 import { Post } from './entities/post.entity';
+import PostCountResult from './types/postCountBody.interface';
 import { PostSearchBody, UpdatePostSearchBody } from './types/postSearchBody.interface';
 import PostSearchResult from './types/postSearchResponse.interface';
-import PostCountResult from './types/postCountBody.interface';
 
 @Injectable()
 export class PostSearchService {

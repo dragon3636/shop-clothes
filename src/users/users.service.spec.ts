@@ -1,16 +1,18 @@
+import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { ConfigService } from 'aws-sdk';
+
 import User from './user.entity';
 import { UsersService } from './users.service';
-import { FilesService } from '../files/files.service';
+import { mockedFile } from '../authentication/tests/publicFile.mock';
+import { mockedUser } from '../authentication/tests/user.mock';
 import PublicFile from '../files/entities/publicFile.entity';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from 'aws-sdk';
+import { FilesService } from '../files/files.service';
+import { PrivateFileService } from '../private-file/private-file.service';
 import { mockedConfigService } from '../utils/mocks/config.service';
 import { mockedJwtService } from '../utils/mocks/jwt.service';
-import { mockedUser } from '../authentication/tests/user.mock';
-import { mockedFile } from '../authentication/tests/publicFile.mock';
-import { PrivateFileService } from '../private-file/private-file.service';
+
 const userArray = [
   {
     firstName: 'firstName #1',

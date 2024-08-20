@@ -1,5 +1,7 @@
-import Role from 'src/users/role.enum';
 import User from '../../users/user.entity';
+
+import Role from '@/users/role.enum';
+
 export const mockedUser: User = {
   id: 1,
   email: 'user@email.com',

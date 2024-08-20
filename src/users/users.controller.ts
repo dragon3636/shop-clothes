@@ -16,12 +16,14 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { Express, Response, response } from 'express';
-import { UsersService } from './users.service';
-import { FindOneParams } from 'src/utils/findOneParams';
-import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import RequestWithUser from 'src/authentication/requestWithUser.interface';
+import { Express, Response, response } from 'express';
+
+import { UsersService } from './users.service';
+
+import JwtAuthenticationGuard from '@/authentication/jwt-authentication.guard';
+import RequestWithUser from '@/authentication/requestWithUser.interface';
+import { FindOneParams } from '@/utils/findOneParams';
 
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)

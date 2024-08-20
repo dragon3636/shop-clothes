@@ -1,4 +1,5 @@
 import { ConsoleLogger, LoggerService } from '@nestjs/common';
+
 import ILogger from './interfaces/logger.interface';
 
 export default class LoggerServiceAdapter extends ConsoleLogger implements LoggerService {

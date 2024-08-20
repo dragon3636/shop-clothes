@@ -1,7 +1,9 @@
 import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import RequestWithUser from 'src/authentication/requestWithUser.interface';
+
 import Role from './role.enum';
+
+import RequestWithUser from '@/authentication/requestWithUser.interface';
 
 const RoleGuard = (role: Role): Type<CanActivate> => {
   class RoleGurdMixin implements CanActivate {

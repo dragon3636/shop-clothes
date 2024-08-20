@@ -1,8 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import Product from './product.entity';
 import { Repository } from 'typeorm';
-import ILogger, { LoggerKey } from 'src/logger/interfaces/logger.interface';
+
+import Product from './product.entity';
+
+import ILogger, { LoggerKey } from '@/logger/interfaces/logger.interface';
 
 @Injectable()
 export class ProductsService {

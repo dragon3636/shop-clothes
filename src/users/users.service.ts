@@ -7,12 +7,14 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import User from './user.entity';
 import { Connection, DataSource, Repository } from 'typeorm';
+
 import CreateUserDto from './dto/createUser.dto';
-import { FilesService } from 'src/files/files.service';
-import { FOLDER_AVATAR } from 'src/constant';
-import { PrivateFileService } from 'src/private-file/private-file.service';
+import User from './user.entity';
+
+import { FOLDER_AVATAR } from '@/constant';
+import { FilesService } from '@/files/files.service';
+import { PrivateFileService } from '@/private-file/private-file.service';
 
 @Injectable()
 export class UsersService {

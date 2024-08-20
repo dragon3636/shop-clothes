@@ -1,3 +1,4 @@
+import { Category } from 'aws-sdk/clients/cloudformation';
 import { Exclude } from 'class-transformer';
 import {
   Column,
@@ -9,13 +10,14 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 import Address from './address.entity';
-import PublicFile from 'src/files/entities/publicFile.entity';
-import { Post } from 'src/post/entities/post.entity';
-import PrivateFile from 'src/private-file/privateFile.entity';
-import { Category } from 'aws-sdk/clients/cloudformation';
-import GroupChat from 'src/chat/entities/group-chat.entity';
 import Role from './role.enum';
+
+import GroupChat from '@/chat/entities/group-chat.entity';
+import PublicFile from '@/files/entities/publicFile.entity';
+import { Post } from '@/post/entities/post.entity';
+import PrivateFile from '@/private-file/privateFile.entity';
 
 @Entity()
 class User {

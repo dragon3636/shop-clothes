@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   WebSocketGateway,
   SubscribeMessage,
@@ -9,10 +10,10 @@ import {
   OnGatewayInit,
   WsResponse,
 } from '@nestjs/websockets';
-import { ChatService } from './chat.service';
-import { Server, Socket } from 'socket.io';
-import { Logger } from '@nestjs/common';
 import { Observable, from, map } from 'rxjs';
+import { Server, Socket } from 'socket.io';
+
+import { ChatService } from './chat.service';
 
 @WebSocketGateway({
   cors: {

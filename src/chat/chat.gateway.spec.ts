@@ -1,10 +1,13 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { ChatGateway } from './chat.gateway';
-import { io, Socket } from 'socket.io-client';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import User from 'src/users/user.entity';
-import { UsersService } from 'src/users/users.service';
+import { io, Socket } from 'socket.io-client';
+
+import { ChatGateway } from './chat.gateway';
+
+import User from '@/users/user.entity';
+import { UsersService } from '@/users/users.service';
+
 async function createNestApp(...gateways: any): Promise<INestApplication> {
   const testingModule = await Test.createTestingModule({
     providers: [

@@ -1,4 +1,5 @@
 import SlackHook from 'winston-slack-webhook-transport';
+
 import { LogLevel } from '../interfaces/log.interface';
 
 export default class SlackTransport {

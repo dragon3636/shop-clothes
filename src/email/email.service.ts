@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { createTransport } from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
 import { ConfigService } from '@nestjs/config';
 import { Cron } from '@nestjs/schedule';
+import { createTransport } from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
 @Injectable()
 export class EmailService {
   private nodemailerTransport: Mail;

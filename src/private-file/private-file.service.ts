@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException, UnsupportedMediaTypeException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import PrivateFile from './privateFile.entity';
-import { S3 } from 'aws-sdk';
-import { v4 as uuid } from 'uuid';
 import { ConfigService } from '@nestjs/config';
-import { ParamSignUrl } from './param-s3.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { S3 } from 'aws-sdk';
 import * as mime from 'mime-types';
+import { Repository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
+
+import { ParamSignUrl } from './param-s3.interface';
+import PrivateFile from './privateFile.entity';
 @Injectable()
 export class PrivateFileService {
   constructor(

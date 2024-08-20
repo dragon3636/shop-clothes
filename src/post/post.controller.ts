@@ -1,3 +1,4 @@
+import { CACHE_MANAGER, CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import {
   Controller,
   Get,
@@ -13,18 +14,19 @@ import {
   UseInterceptors,
   Inject,
 } from '@nestjs/common';
-import { PostService } from './post.service';
+
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
-import { FindOneParams } from 'src/utils/findOneParams';
-import RequestWithUser from 'src/authentication/requestWithUser.interface';
-import { PaginationParams } from 'src/utils/types/paginationParams';
-import { CACHE_MANAGER, CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
-import { GET_POST_BY_ID_CACHE_KEY, GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
 import { HttpCacheInterceptor } from './httpCache.interceptor';
-import RoleGuard from 'src/users/role.guard';
-import Role from 'src/users/role.enum';
+import { PostService } from './post.service';
+import { GET_POST_BY_ID_CACHE_KEY, GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
+
+import JwtAuthenticationGuard from '@/authentication/jwt-authentication.guard';
+import RequestWithUser from '@/authentication/requestWithUser.interface';
+import Role from '@/users/role.enum';
+import RoleGuard from '@/users/role.guard';
+import { FindOneParams } from '@/utils/findOneParams';
+import { PaginationParams } from '@/utils/types/paginationParams';
 
 @Controller('post')
 @UseInterceptors(ClassSerializerInterceptor)

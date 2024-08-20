@@ -1,8 +1,9 @@
 import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { Post } from 'src/post/entities/post.entity';
-import Role from 'src/users/role.enum';
-import User from 'src/users/user.entity';
+
+import { Post } from '@/post/entities/post.entity';
+import Role from '@/users/role.enum';
+import User from '@/users/user.entity';
 export enum Action {
   Manage = 'manage',
   Create = 'create',

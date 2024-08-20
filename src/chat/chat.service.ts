@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { AuthenticationService } from 'src/authentication/authentication.service';
-import { WsException } from '@nestjs/websockets';
-import { Socket } from 'socket.io';
-import { parse } from 'cookie';
 import { InjectRepository } from '@nestjs/typeorm';
+import { WsException } from '@nestjs/websockets';
+import { parse } from 'cookie';
+import { Socket } from 'socket.io';
 import { Repository } from 'typeorm';
-import User from 'src/users/user.entity';
+
 import Message from './entities/message.entity';
+
+import { AuthenticationService } from '@/authentication/authentication.service';
+import User from '@/users/user.entity';
 
 @Injectable()
 export class ChatService {

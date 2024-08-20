@@ -1,14 +1,16 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import * as AWS from 'aws-sdk';
+import * as mime from 'mime-types';
+
 import { PrivateFileService } from './private-file.service';
 import PrivateFile from './privateFile.entity';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
-import { mockedConfigService } from '../utils/mocks/config.service';
-import * as AWS from 'aws-sdk';
-import User from '../users/user.entity';
 import { mockedUser } from '../authentication/tests/user.mock';
-import { mockedPrivateFile } from 'src/authentication/tests/publicFile.mock';
-import * as mime from 'mime-types';
+import User from '../users/user.entity';
+import { mockedConfigService } from '../utils/mocks/config.service';
+
+import { mockedPrivateFile } from '@/authentication/tests/publicFile.mock';
 const s3 = new AWS.S3();
 const mockedObjectS3 = {
   Key: 'key-object',

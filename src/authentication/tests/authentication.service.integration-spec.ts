@@ -1,14 +1,17 @@
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { Test } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import User from 'src/users/user.entity';
+
 import { mockedUser } from './user.mock';
 import { AuthenticationService } from '../authentication.service';
-import { UsersService } from 'src/users/users.service';
-import { Test } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
-import { mockedConfigService } from 'src/utils/mocks/config.service';
-import { JwtService } from '@nestjs/jwt';
-import { mockedJwtService } from 'src/utils/mocks/jwt.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
+
+import User from '@/users/user.entity';
+import { UsersService } from '@/users/users.service';
+import { mockedConfigService } from '@/utils/mocks/config.service';
+import { mockedJwtService } from '@/utils/mocks/jwt.service';
+
 describe('The Authetication', () => {
   let authenticationService: AuthenticationService;
   let usersService: UsersService;

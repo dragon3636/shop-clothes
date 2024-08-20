@@ -1,14 +1,12 @@
-import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
-import { AppModule } from './app.module';
-import cookieParser from 'cookie-parser';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { ExceptionsLoggerFilter } from './utils/exceptionsLogger.filter';
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { config } from 'aws-sdk';
-import { runInCluster } from './utils/runInCluster';
-import { RedisIoAdapter } from './utils/adapters/redis-adapter';
-import getLogLevels from './utils/getLogLevels';
+import cookieParser from 'cookie-parser';
+
+import { AppModule } from './app.module';
 import LoggerServiceAdapter from './logger/LoggerServiceAdapter';
+import { RedisIoAdapter } from './utils/adapters/redis-adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {});

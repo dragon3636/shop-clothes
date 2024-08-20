@@ -1,5 +1,6 @@
-import User from 'src/users/user.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import User from '@/users/user.entity';
 
 @Entity()
 class GroupChat {

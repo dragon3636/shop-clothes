@@ -1,8 +1,9 @@
 import { Inject, Injectable, NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response, NextFunction } from 'express';
-import ILogger, { LoggerKey } from 'src/logger/interfaces/logger.interface';
 import morgan from 'morgan';
+
+import ILogger, { LoggerKey } from '@/logger/interfaces/logger.interface';
 
 @Injectable()
 export default class LoggerMiddleware implements NestMiddleware {

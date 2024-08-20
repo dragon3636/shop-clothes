@@ -1,7 +1,9 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+
 import { ChatService } from './chat.service';
-import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
-import RequestWithUser from 'src/authentication/requestWithUser.interface';
+
+import JwtAuthenticationGuard from '@/authentication/jwt-authentication.guard';
+import RequestWithUser from '@/authentication/requestWithUser.interface';
 
 @Controller('chat')
 export class ChatController {

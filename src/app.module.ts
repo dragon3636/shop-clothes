@@ -1,25 +1,26 @@
+import * as Joi from '@hapi/joi';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from './database/database.module';
-import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { FilesModule } from './files/files.module';
-import { PostModule } from './post/post.module';
-import { PrivateFileModule } from './private-file/private-file.module';
-import { SearchModule } from './search/search.module';
-import { ProductsModule } from './products/products.module';
-import { ProductCategoriesModule } from './productCategories/productCategory.module';
-import * as Joi from '@hapi/joi';
-import { ScheduleModule } from '@nestjs/schedule';
+import { CaslModule } from './casl/casl.module';
+import { CategoriesModule } from './categories/categories.module';
+import { ChatModule } from './chat/chat.module';
+import { ContextModule } from './context/context.module';
+import { DatabaseModule } from './database/database.module';
 import { EmailModule } from './email/email.module';
 import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
-import { ChatModule } from './chat/chat.module';
+import { FilesModule } from './files/files.module';
 import { LoggerModule } from './logger/logger.module';
-import { ContextModule } from './context/context.module';
-import { CategoriesModule } from './categories/categories.module';
-import { CaslModule } from './casl/casl.module';
+import { PostModule } from './post/post.module';
+import { PrivateFileModule } from './private-file/private-file.module';
+import { ProductCategoriesModule } from './productCategories/productCategory.module';
+import { ProductsModule } from './products/products.module';
+import { SearchModule } from './search/search.module';
+import { UsersModule } from './users/users.module';
 import LoggerMiddleware from './utils/middleware/logg.middleware';
 
 @Module({
